@@ -23,7 +23,7 @@ class ExecutableQuery {
     toAQL(prettyPrint = false) {
         const fields = Object.entries(this.schema).map(([alias, field]) => {
             if (field instanceof RelationQueryBuilder_1.ExecutableRelationQuery) {
-                return `${alias}: (\n${field.toAQL()}\n)`;
+                return `${alias}: (\n${field.toAQL(this.variable)}\n)`;
             }
             return `${alias}: ${field}`;
         }).join(",\n");

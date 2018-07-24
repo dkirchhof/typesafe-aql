@@ -9,6 +9,6 @@ export class Relation<CollectionType extends Collection> {
     }
 
     createQuery(variable: string) {
-        return new RelationQueryBuilder("u", variable, this.edgeName, new this.collectionConstructor());
+        return new RelationQueryBuilder(variable, this.edgeName, new this.collectionConstructor());
     }
 }

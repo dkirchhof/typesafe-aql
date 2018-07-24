@@ -31,7 +31,7 @@ export class ExecutableQuery<Schema> {
         const fields = Object.entries(this.schema).map(([alias, field]) => {
             
             if(field instanceof ExecutableRelationQuery) {
-                return `${alias}: (\n${field.toAQL()}\n)`;
+                return `${alias}: (\n${field.toAQL(this.variable)}\n)`;
             }
 
             return `${alias}: ${field}`;

@@ -7,7 +7,7 @@ class Relation {
         this.collectionConstructor = collectionConstructor;
     }
     createQuery(variable) {
-        return new RelationQueryBuilder_1.RelationQueryBuilder("u", variable, this.edgeName, new this.collectionConstructor());
+        return new RelationQueryBuilder_1.RelationQueryBuilder(variable, this.edgeName, new this.collectionConstructor());
     }
 }
 exports.Relation = Relation;
