@@ -1,5 +1,15 @@
+import chalk from "chalk";
 import { Collection } from "./Collection";
 import { Field } from "./Field";
+
+const KEYWORDS = [
+    "FOR",
+    "IN",
+    "RETURN",
+    "OUTBOUND",
+    "INBOUND",
+    "ANY",
+];
 
 export function createProxy(collection: Collection, variable: string) {
     return new Proxy(collection, {
@@ -15,7 +25,7 @@ export function createProxy(collection: Collection, variable: string) {
 export function prettifyQuery(query: string, spaces = 2) {
     let indentation = 0;
     
-    return query
+    const indented = query
         .split("\n")
         .map(line => {
             if(line.endsWith("}") || line.endsWith(")")) {
@@ -31,4 +41,13 @@ export function prettifyQuery(query: string, spaces = 2) {
             return indentedLine;
         })
         .join("\n");
+
+    const coloredKeywords = KEYWORDS.reduce(
+        (result, keyword) => result.replace(new RegExp(keyword, "g"), chalk.blue(keyword)),
+        indented
+    );
+
+    // const coloredFieldNames = coloredKeywords.replace(/\w+:/g, chalk.green("$&"));
+
+    return coloredKeywords;
 }

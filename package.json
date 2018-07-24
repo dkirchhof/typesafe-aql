@@ -10,7 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "arangojs": "^6.4.0"
+    "arangojs": "^6.4.0",
+    "chalk": "^2.4.1"
   },
   "devDependencies": {
     "@types/node": "^10.5.2"

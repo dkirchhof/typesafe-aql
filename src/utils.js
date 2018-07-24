@@ -1,6 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const chalk_1 = require("chalk");
 const Field_1 = require("./Field");
+const KEYWORDS = [
+    "FOR",
+    "IN",
+    "RETURN",
+    "OUTBOUND",
+    "INBOUND",
+    "ANY",
+];
 function createProxy(collection, variable) {
     return new Proxy(collection, {
         get: (target, key) => {
@@ -14,7 +23,7 @@ function createProxy(collection, variable) {
 exports.createProxy = createProxy;
 function prettifyQuery(query, spaces = 2) {
     let indentation = 0;
-    return query
+    const indented = query
         .split("\n")
         .map(line => {
         if (line.endsWith("}") || line.endsWith(")")) {
@@ -27,5 +36,8 @@ function prettifyQuery(query, spaces = 2) {
         return indentedLine;
     })
         .join("\n");
+    const coloredKeywords = KEYWORDS.reduce((result, keyword) => result.replace(new RegExp(keyword, "g"), chalk_1.default.blue(keyword)), indented);
+    const coloredFieldNames = coloredKeywords.replace(/\w+:/g, chalk_1.default.green("$&"));
+    return coloredFieldNames;
 }
 exports.prettifyQuery = prettifyQuery;
