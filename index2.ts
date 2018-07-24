@@ -3,99 +3,120 @@
 // const dbServer = new Database();
 // const db = dbServer.useDatabase("test");
 
-// FOR x IN y
-// return {
-//   fistname: x.firstname,
-//   lastname: x.lastname,
-//   age: x.age,
-//   courses: subquery
+// interface IUser {
+//     firstname: string;
+//     lastname: string;
+//     age: number;
+
+//     // relations: {
+//     //     courses: ICourse;
+//     // }
+
+//     // ccourses: Relation<ICourse>;
 // }
 
-// FOR x IN 1 OUTBOUND y z
-// FOR x IN 1 INBOUND y z
-// FOR x IN 1 ANY y z
+// interface ICourse {
+//     name: string;
+// }
+
+type MappedType<T> = 
+    T extends Field<infer U> ? U : 
+    T extends ExecutableRelationQuery<infer U> ? MappedSchema<U> :
+    T;
 
 type MappedSchema<T> = { 
-    [s in keyof T]: T[s] extends ExecutableRelationQuery<infer U> ? U : T[s];
+    [s in keyof T]: MappedType<T[s]>
 };
 
-class Relation<Model extends object> {
-    resolve(tableName: string, variable: string) {
-        return new QueryBuilder<Model>(tableName, variable);
+class Field<Type> {
+    private __type = "field";
+
+    constructor() {
+
     }
 }
 
-interface IUser {
-    firstname: string;
-    lastname: string;
-    age: number;
+class Relation<CollectionType extends Collection> {
+    constructor(
+        private readonly edgeName: string, 
+        private readonly collectionConstructor: { new(...args: any[]) : CollectionType }) {
 
-    // relations: {
-    //     courses: ICourse;
-    // }
+    }
 
-    // ccourses: Relation<ICourse>;
+    createQuery(variable: string) {
+        return new RelationQueryBuilder("u", variable, this.edgeName, new this.collectionConstructor());
+    }
 }
 
-class Field<Type> {
+// type Entity<Type> = { [s in keyof Type]: Field<Type[s]>; };
 
+class Collection {
+    constructor(public readonly collectionName: string) {
+
+    }
+
+    createQuery(variable: string) {
+        return new QueryBuilder(this, variable);
+    }
 }
 
-type Entity<Type> = { [s in keyof Type]: Field<Type[s]>; };
 
-class User {
+
+
+
+class UserCollection extends Collection {
     firstname = new Field<string>();
     lastname = new Field<string>();
     age = new Field<number>();
+    courses = new Relation("teaches", CourseCollection);
 }
+const userCollection = new UserCollection("users");
 
-interface ICourse {
-    name: string;
+class CourseCollection extends Collection {
+    name = new Field<string>();
 }
+const courseCollection = new CourseCollection("courses");
 
-class QueryBuilder<Model extends object> {
+
+
+class QueryBuilder<CollectionType extends Collection> {
 
     constructor(
-        private readonly tableName: string,
+        private readonly collection: CollectionType,
         private readonly variable: string) {
-
+            
     }
 
-    return<Schema>(schemaCreator: (m: Model) => Schema) {
-        
-        const empty = { } as Model;
-
-        const proxy = new Proxy(empty, {
-            get: (_, key) => `${this.variable}.${key.toString()}`
-        });
-
+    return<Schema>(schemaCreator: (collection: CollectionType) => Schema) {
+        const proxy = createProxy(this.collection, this.variable);
         const schema = schemaCreator(proxy);
-
-        return new ExecutableQuery<Schema>(this.tableName, this.variable, schema);
+        return new ExecutableQuery<Schema>(this.collection.collectionName, this.variable, schema);
     }
 }
 
 class ExecutableQuery<Schema> {
     
     constructor(
-        private readonly tableName: string,
+        private readonly collectionName: string,
         private readonly variable: string,
         private readonly schema: Schema) {
 
     }
 
-    toAQL() {
-        const fields = Object.entries(this.schema).map(([alias, fieldName]) => {
+    toAQL(prettyPrint = false) {
+        const fields = Object.entries(this.schema).map(([alias, field]) => {
             
-            if(fieldName instanceof ExecutableRelationQuery) {
-                return `${alias}: (\n${fieldName.toAQL()}\n)`;
+            if(field instanceof ExecutableRelationQuery) {
+                return `${alias}: (\n${field.toAQL()}\n)`;
             }
 
-            return `${alias}: ${fieldName}`;
+            return `${alias}: ${field}`;
 
         }).join(",\n");
 
-        return `FOR ${this.variable} IN ${this.tableName}\nRETURN {\n${fields}\n}`;
+        const query = `FOR ${this.variable} IN ${this.collectionName}\nRETURN {\n${fields}\n}`;
+
+        return prettyPrint ? prettifyQuery(query) : query;
     }
     
     fetch() {
@@ -108,30 +129,19 @@ class ExecutableQuery<Schema> {
     }
 }
 
-class RelationQueryBuilder<Model extends object> {
+class RelationQueryBuilder<CollectionType extends Collection> {
 
-    private readonly edgeName = "teaches";
-    private readonly variable = "t";
-
-    constructor(private readonly parentVariable: string, type: Model) {
+    constructor(
+        private readonly parentVariable: string,
+        private readonly variable: string,
+        private readonly edgeName: string,
+        private readonly collection: CollectionType) {
 
     }
 
-    return <Schema>(schemaCreator: (m: Model) => Schema) {
-        const empty: any = { };
-
-        const proxy = new Proxy(empty, {
-            get: (target, key) => {
-                if(key === "courses") {
-                    return target[key];
-                }
-
-                return `${this.variable}.${key.toString()}`;
-            }
-        });
-
-        const schema = schemaCreator(proxy);
-        
+    return <Schema>(schemaCreator: (collection: CollectionType) => Schema) {
+        const proxy = createProxy(this.collection, this.variable);        
+        const schema = schemaCreator(proxy);        
         return new ExecutableRelationQuery<Schema>(this.parentVariable, this.edgeName, this.variable, schema);
     }
 }
@@ -146,20 +156,21 @@ class ExecutableRelationQuery<Schema> {
 
     }
 
-    toAQL() {
+    toAQL(prettyPrint = false) {
 
-        const fields = Object.entries(this.schema).map(([alias, fieldName]) => {
+        const fields = Object.entries(this.schema).map(([alias, field]) => {
             
-            if(fieldName instanceof RelationQueryBuilder) {
+            // if(field instanceof ExecutableRelationQuery) {
+            //     return field.toAQL();
+            // }
 
-            }
-
-            return `${alias}: ${fieldName}`;
+            return `${alias}: ${field}`;
 
         }).join(",\n");
 
-        // FOR x IN 1 OUTBOUND y z
-        return `FOR ${this.variable} IN 1 OUTBOUND ${this.parentVariable} ${this.edgeName}\nRETURN {\n${fields}\n}`;
+        const query = `FOR ${this.variable} IN 1 OUTBOUND ${this.parentVariable} ${this.edgeName}\nRETURN {\n${fields}\n}`;
+
+        return prettyPrint ? prettifyQuery(query) : query; 
     }
 
     fetch() {
@@ -169,38 +180,35 @@ class ExecutableRelationQuery<Schema> {
 
 (async () => {
 
-    console.log(
-        prettyPrint(
-            new QueryBuilder<IUser>("users", "u")
-                .return(u => ({ 
-                    firstname: u.firstname, 
-                    age: u.age,
-                    test: 1,
+    // userCollection.createQuery("u").return(u => ({ firstname: u.firstname, lastname: u.lastname, age: u.age })).toAQL(),
 
-                    courses: new RelationQueryBuilder("u", u.relations.courses)
-                        .return(c => ({ name: c.name })),
-                }))
-                .toAQL()    
-        )
+    console.log(
+        userCollection.createQuery("u")
+            .return(u => ({ 
+                firstname: u.firstname,
+                lastname: u.lastname,
+                age: u.age,
+
+                courses: u.courses.createQuery("c")
+                    .return(c => ({ userName: u.firstname, name: c.name })),
+            }))
+            .toAQL(true),
     );
 
 })();
 
-// type Diff<T, U> = T extends U ? never : T;
-// // type NonNullable<T> = Diff<T, null | undefined>;
+function createProxy(collection: Collection, variable: string) {
+    return new Proxy(collection, {
+        get: (target: any, key) => { 
+            if(target[key] instanceof Field) {
+                return `${variable}.${key.toString()}`;
+            }
+            return target[key]; 
+        }
+    });
+}
 
-// function f<Model>(schema: { [s in keyof Model]?: boolean }) {
-//     // return {} as Pick<Model, Extract<keyof Model, keyof typeof schema>>;
-//     // return {} as Pick<Model, NonNullable<keyof typeof schema>>;
-
-//     return {} as Model;
-// }
-
-// f<IUser>({ age: true, lastname: true }).
-
-
-
-function prettyPrint(query: string, spaces = 2) {
+function prettifyQuery(query: string, spaces = 2) {
     let indentation = 0;
     
     return query
@@ -220,3 +228,31 @@ function prettyPrint(query: string, spaces = 2) {
         })
         .join("\n");
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// type Diff<T, U> = T extends U ? never : T;
+// // type NonNullable<T> = Diff<T, null | undefined>;
+
+// function f<Model>(schema: { [s in keyof Model]?: boolean }) {
+//     // return {} as Pick<Model, Extract<keyof Model, keyof typeof schema>>;
+//     // return {} as Pick<Model, NonNullable<keyof typeof schema>>;
+
+//     return {} as Model;
+// }
+
+// f<IUser>({ age: true, lastname: true }).
