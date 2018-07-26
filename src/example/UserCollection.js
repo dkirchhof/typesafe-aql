@@ -10,7 +10,7 @@ class UserCollection extends Collection_1.Collection {
         this.firstname = new Field_1.Field();
         this.lastname = new Field_1.Field();
         this.age = new Field_1.Field();
-        this.courses = new Relation_1.Relation("teaches", CourseCollection_1.CourseCollection);
+        this.courses = new Relation_1.Relation("OUTBOUND", "teaches", CourseCollection_1.CourseCollection);
     }
 }
 exports.UserCollection = UserCollection;

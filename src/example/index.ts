@@ -7,8 +7,6 @@ const db = dbServer.useDatabase("test");
 
 (async () => {
 
-    // userCollection.createQuery("u").return(u => ({ firstname: u.firstname, lastname: u.lastname, age: u.age })).toAQL(),
-
     const query = userCollection.createQuery("u")
         .return(u => ({ 
             firstname: u.firstname,
@@ -19,15 +17,16 @@ const db = dbServer.useDatabase("test");
                 .return(c => ({ 
                     teachersFirstname: u.firstname,
                     name: c.name,
-                    // teacher: c.teacher.createQuery("t")
-                    //     .return(t => ({ 
-                    //         firstname: t.firstname 
-                    //     }))
+                    teacher: c.teacher.createQuery("t")
+                        .return(t => ({ 
+                            firstname: t.firstname 
+                        }))
                 })),
         }));
     
     console.log(query.toAQL(true));
+
     const result = await query.fetch(db);
-    console.log(inspect(result, false, null));
+    console.log(inspect(result, false, null, true));
 
 })();

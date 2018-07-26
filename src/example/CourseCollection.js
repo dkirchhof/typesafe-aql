@@ -8,7 +8,7 @@ class CourseCollection extends Collection_1.Collection {
     constructor() {
         super(...arguments);
         this.name = new Field_1.Field();
-        this.teacher = new Relation_1.Relation("tought_by", UserCollection_1.UserCollection);
+        this.teacher = new Relation_1.Relation("INBOUND", "teaches", UserCollection_1.UserCollection);
     }
 }
 exports.CourseCollection = CourseCollection;

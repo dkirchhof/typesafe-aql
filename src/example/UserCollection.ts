@@ -7,7 +7,7 @@ export class UserCollection extends Collection {
     firstname = new Field<string>();
     lastname = new Field<string>();
     age = new Field<number>();
-    courses = new Relation("teaches", CourseCollection);
+    courses = new Relation("OUTBOUND", "teaches", CourseCollection);
 }
 
 export const userCollection = new UserCollection("users");

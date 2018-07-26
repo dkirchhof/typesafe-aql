@@ -6,7 +6,6 @@ const util_1 = require("util");
 const dbServer = new arangojs_1.Database();
 const db = dbServer.useDatabase("test");
 (async () => {
-    // userCollection.createQuery("u").return(u => ({ firstname: u.firstname, lastname: u.lastname, age: u.age })).toAQL(),
     const query = UserCollection_1.userCollection.createQuery("u")
         .return(u => ({
         firstname: u.firstname,
@@ -16,9 +15,13 @@ const db = dbServer.useDatabase("test");
             .return(c => ({
             teachersFirstname: u.firstname,
             name: c.name,
+            teacher: c.teacher.createQuery("t")
+                .return(t => ({
+                firstname: t.firstname
+            }))
         })),
     }));
     console.log(query.toAQL(true));
     const result = await query.fetch(db);
-    console.log(util_1.inspect(result, false, null));
+    console.log(util_1.inspect(result, false, null, true));
 })();

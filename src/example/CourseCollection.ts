@@ -5,7 +5,7 @@ import { UserCollection } from "./UserCollection";
 
 export class CourseCollection extends Collection {
     name = new Field<string>();
-    teacher = new Relation("tought_by", UserCollection);
+    teacher = new Relation("INBOUND", "teaches", UserCollection);
 }
 
 export const courseCollection = new CourseCollection("courses");
