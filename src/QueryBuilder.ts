@@ -1,3 +1,4 @@
+import { Database } from "arangojs";
 import { Collection } from "./Collection";
 import { createProxy, prettifyQuery } from "./utils";
 import { ExecutableRelationQuery } from "./RelationQueryBuilder";
@@ -43,12 +44,12 @@ export class ExecutableQuery<Schema> {
         return prettyPrint ? prettifyQuery(query) : query;
     }
     
-    fetch() {
-        // const result = await db.query(query);
-        // return result.all() as Schema[];
+    async fetch(db: Database) {
+        // return { } as MappedSchema<Schema>;
 
-        // return { } as Schema[];
+        const query = this.toAQL();
+        const result = await db.query(query);
 
-        return { } as MappedSchema<Schema>;
+        return result.all() as Promise<MappedSchema<Schema>[]>;
     }
 }

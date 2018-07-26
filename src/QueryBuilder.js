@@ -30,11 +30,11 @@ class ExecutableQuery {
         const query = `FOR ${this.variable} IN ${this.collectionName}\nRETURN {\n${fields}\n}`;
         return prettyPrint ? utils_1.prettifyQuery(query) : query;
     }
-    fetch() {
-        // const result = await db.query(query);
-        // return result.all() as Schema[];
-        // return { } as Schema[];
-        return {};
+    async fetch(db) {
+        // return { } as MappedSchema<Schema>;
+        const query = this.toAQL();
+        const result = await db.query(query);
+        return result.all();
     }
 }
 exports.ExecutableQuery = ExecutableQuery;

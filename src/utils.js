@@ -37,7 +37,7 @@ function prettifyQuery(query, spaces = 2) {
     })
         .join("\n");
     const coloredKeywords = KEYWORDS.reduce((result, keyword) => result.replace(new RegExp(keyword, "g"), chalk_1.default.blue(keyword)), indented);
-    const coloredFieldNames = coloredKeywords.replace(/\w+:/g, chalk_1.default.green("$&"));
-    return coloredFieldNames;
+    // const coloredFieldNames = coloredKeywords.replace(/\w+:/g, chalk.green("$&"));
+    return coloredKeywords;
 }
 exports.prettifyQuery = prettifyQuery;

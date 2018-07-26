@@ -1,9 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const arangojs_1 = require("arangojs");
 const UserCollection_1 = require("./UserCollection");
+const util_1 = require("util");
+const dbServer = new arangojs_1.Database();
+const db = dbServer.useDatabase("test");
 (async () => {
     // userCollection.createQuery("u").return(u => ({ firstname: u.firstname, lastname: u.lastname, age: u.age })).toAQL(),
-    console.log(UserCollection_1.userCollection.createQuery("u")
+    const query = UserCollection_1.userCollection.createQuery("u")
         .return(u => ({
         firstname: u.firstname,
         lastname: u.lastname,
@@ -12,11 +16,9 @@ const UserCollection_1 = require("./UserCollection");
             .return(c => ({
             teachersFirstname: u.firstname,
             name: c.name,
-            teacher: c.teacher.createQuery("t")
-                .return(t => ({
-                firstname: t.firstname
-            }))
         })),
-    }))
-        .toAQL(true));
+    }));
+    console.log(query.toAQL(true));
+    const result = await query.fetch(db);
+    console.log(util_1.inspect(result, false, null));
 })();
