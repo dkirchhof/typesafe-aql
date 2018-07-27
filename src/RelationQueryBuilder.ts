@@ -1,19 +1,19 @@
 import { Collection } from "./Collection";
 import { prettifyQuery, createProxy } from "./utils";
 import { RelationDirection } from "./RelationDirection";
+import { EdgeCollection } from "./EdgeCollection";
 
-export class RelationQueryBuilder<CollectionType extends Collection> {
+export class RelationQueryBuilder<ToCollectionType extends Collection> {
 
     constructor(
         private readonly variable: string,
         private readonly direction: RelationDirection,
-        private readonly edgeName: string,
-        private readonly collection: CollectionType
+        private readonly edgeCollection: EdgeCollection<any, any>,
     ) {
 
     }
 
-    return <Schema>(schemaCreator: (collection: CollectionType) => Schema) {
+    return <Schema>(schemaCreator: (collection: ToCollectionType) => Schema) {
         const proxy = createProxy(this.collection, this.variable);        
         const schema = schemaCreator(proxy);  
               

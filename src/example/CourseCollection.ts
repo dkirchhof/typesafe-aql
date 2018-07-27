@@ -1,11 +1,11 @@
 import { Field } from "../Field";
 import { Collection } from "../Collection";
-import { Relation } from "../Relation";
-import { UserCollection } from "./UserCollection";
+import { Edge } from "../Edge";
+import { teachesEdgeCollection } from "./TeachesEdgeCollection";
 
 export class CourseCollection extends Collection {
     name = new Field<string>();
-    teacher = new Relation("INBOUND", "teaches", UserCollection);
+    teacher = new Edge("INBOUND", teachesEdgeCollection);
 }
 
 export const courseCollection = new CourseCollection("courses");
