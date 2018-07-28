@@ -6,7 +6,7 @@ export class Collection {
     _key = new Field<string>();
     _rev = new Field<string>();
 
-    constructor(public readonly collectionName: string) {
+    constructor(public readonly _collectionName: string) {
 
     }
 

@@ -10,7 +10,7 @@ class QueryBuilder {
     return(schemaCreator) {
         const proxy = utils_1.createProxy(this.collection, this.variable);
         const schema = schemaCreator(proxy);
-        return new ExecutableQuery(this.collection.collectionName, this.variable, schema);
+        return new ExecutableQuery(this.collection._collectionName, this.variable, schema);
     }
 }
 exports.QueryBuilder = QueryBuilder;

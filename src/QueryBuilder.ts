@@ -15,7 +15,7 @@ export class QueryBuilder<CollectionType extends Collection> {
     return<Schema>(schemaCreator: (collection: CollectionType) => Schema) {
         const proxy = createProxy(this.collection, this.variable);
         const schema = schemaCreator(proxy);
-        return new ExecutableQuery<Schema>(this.collection.collectionName, this.variable, schema);
+        return new ExecutableQuery<Schema>(this.collection._collectionName, this.variable, schema);
     }
 }
 

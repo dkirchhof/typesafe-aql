@@ -11,7 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "arangojs": "^6.4.0",
-    "chalk": "^2.4.1"
+    "chalk": "^2.4.1",
+    "typescript": "^2.9.2"
   },
   "devDependencies": {
     "@types/node": "^10.5.2"

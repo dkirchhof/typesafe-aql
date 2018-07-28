@@ -1,13 +1,16 @@
 import { EdgeCollection } from "./EdgeCollection";
 import { RelationQueryBuilder } from "./RelationQueryBuilder";
 import { RelationDirection } from "./RelationDirection";
+import { Collection } from "./Collection";
 
-export class Edge {
+export class Edge<EdgeCollectionType extends EdgeCollection, ToCollectionType extends Collection> {
     constructor(
         private readonly defaultDirection: RelationDirection,
         // private readonly edgeName: string, 
         // private readonly collectionConstructor: { new(...args: any[]): CollectionType }
-        private readonly edgeCollection: EdgeCollection<any, any>) {
+        private readonly edgeCollection: EdgeCollectionType,
+        private readonly toCollection: ToCollectionType,
+    ) {
 
     }
 
@@ -15,6 +18,8 @@ export class Edge {
         return new RelationQueryBuilder(
             variable,
             direction || this.defaultDirection, 
-            this.edgeCollection);
+            this.edgeCollection,
+            this.toCollection,
+        );
     }
 }

@@ -2,16 +2,17 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("./utils");
 class RelationQueryBuilder {
-    constructor(variable, direction, edgeName, collection) {
+    constructor(variable, direction, edgeCollection, toCollection) {
         this.variable = variable;
         this.direction = direction;
-        this.edgeName = edgeName;
-        this.collection = collection;
+        this.edgeCollection = edgeCollection;
+        this.toCollection = toCollection;
     }
     return(schemaCreator) {
-        const proxy = utils_1.createProxy(this.collection, this.variable);
-        const schema = schemaCreator(proxy);
-        return new ExecutableRelationQuery(this.variable, this.direction, this.edgeName, schema);
+        const toCollectionProxy = utils_1.createProxy(this.toCollection, `${this.variable}_v`);
+        const edgeCollectionProxy = utils_1.createProxy(this.edgeCollection, `${this.variable}_e`);
+        const schema = schemaCreator(toCollectionProxy, edgeCollectionProxy);
+        return new ExecutableRelationQuery(this.variable, this.direction, this.edgeCollection._collectionName, schema);
     }
 }
 exports.RelationQueryBuilder = RelationQueryBuilder;
@@ -29,7 +30,9 @@ class ExecutableRelationQuery {
             }
             return `${alias}: ${field}`;
         }).join(",\n");
-        const query = `FOR ${this.variable} IN 1 ${this.direction} ${parentVariable} ${this.edgeName}\nRETURN {\n${fields}\n}`;
+        const vertexVariable = `${this.variable}_v`;
+        const edgeVariable = `${this.variable}_e`;
+        const query = `FOR ${vertexVariable}, ${edgeVariable} IN 1 ${this.direction} ${parentVariable} ${this.edgeName}\nRETURN {\n${fields}\n}`;
         return prettyPrint ? utils_1.prettifyQuery(query) : query;
     }
 }
