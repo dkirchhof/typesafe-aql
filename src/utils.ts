@@ -43,7 +43,7 @@ export function prettifyQuery(query: string, spaces = 2) {
         .join("\n");
 
     const coloredKeywords = KEYWORDS.reduce(
-        (result, keyword) => result.replace(new RegExp(keyword, "g"), chalk.blue(keyword)),
+        (result, keyword) => result.replace(new RegExp(`\\b${keyword}\\b`, "g"), chalk.blue(keyword)),
         indented
     );
 
