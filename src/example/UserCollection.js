@@ -11,7 +11,7 @@ class UserCollection extends Collection_1.Collection {
         this.firstname = new Field_1.Field();
         this.lastname = new Field_1.Field();
         this.age = new Field_1.Field();
-        this.teaches = new Edge_1.Edge("OUTBOUND", TeachesEdgeCollection_1.teachesEdgeCollection, CourseCollection_1.courseCollection);
+        this.teaches = new Edge_1.Edge("OUTBOUND", TeachesEdgeCollection_1.TeachesEdgeCollection, CourseCollection_1.CourseCollection);
     }
 }
 exports.UserCollection = UserCollection;

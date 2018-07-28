@@ -11,7 +11,7 @@ class Edge {
         this.toCollection = toCollection;
     }
     createQuery(variable, direction) {
-        return new RelationQueryBuilder_1.RelationQueryBuilder(variable, direction || this.defaultDirection, this.edgeCollection, this.toCollection);
+        return new RelationQueryBuilder_1.RelationQueryBuilder(variable, direction || this.defaultDirection, new this.edgeCollection(), new this.toCollection());
     }
 }
 exports.Edge = Edge;
