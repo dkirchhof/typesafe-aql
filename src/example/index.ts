@@ -14,20 +14,20 @@ const db = dbServer.useDatabase("test");
             lastname: u.lastname,
             age: u.age,
 
-            courses: u.courses.createQuery("c")
+            courses: u.teaches.createQuery("t")
                 .return(v => ({
-                    test: v.name
-                    // name: c.name,
-                    // teacher: c.teacher.createQuery("t")
-                    //     .return(t => ({ 
-                    //         firstname: t.firstname 
-                    //     }))
+                    name: v.name,
+                    teacher: v.taughtBy.createQuery("t2")
+                        .return(t => ({ 
+                            firstname: t.firstname 
+                        }))
                 })),
         }));
     
     console.log(query.toAQL(true));
 
     // const result = await query.fetch(db);
+    // result[0].courses[0].teacher[0].firstname
     // console.log(inspect(result, false, null, true));
 
 })();

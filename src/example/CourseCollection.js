@@ -9,7 +9,7 @@ class CourseCollection extends Collection_1.Collection {
     constructor() {
         super(...arguments);
         this.name = new Field_1.Field();
-        this.teacher = new Edge_1.Edge("INBOUND", TeachesEdgeCollection_1.teachesEdgeCollection, UserCollection_1.userCollection);
+        this.taughtBy = new Edge_1.Edge("INBOUND", TeachesEdgeCollection_1.teachesEdgeCollection, UserCollection_1.userCollection);
     }
 }
 exports.CourseCollection = CourseCollection;

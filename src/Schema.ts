@@ -7,5 +7,5 @@ export type MappedSchema<T> = {
 
 type MappedType<T> = 
     T extends Field<infer U> ? U : 
-    T extends ExecutableRelationQuery<infer U> ? MappedSchema<U> :
+    T extends ExecutableRelationQuery<infer U> ? MappedSchema<U>[] :
     T;

@@ -8,7 +8,7 @@ export class UserCollection extends Collection {
     firstname = new Field<string>();
     lastname = new Field<string>();
     age = new Field<number>();
-    courses = new Edge("OUTBOUND", teachesEdgeCollection, courseCollection);
+    teaches = new Edge("OUTBOUND", teachesEdgeCollection, courseCollection);
 }
 
 export const userCollection = new UserCollection("users");
