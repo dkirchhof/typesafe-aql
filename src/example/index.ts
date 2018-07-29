@@ -1,9 +1,12 @@
 import { Database } from "arangojs";
-import { userCollection } from "./UserCollection";
+import { userCollection, UserCollection } from "./UserCollection";
 import { inspect } from "util";
+import { createUML } from "../utils/createUML";
+import { CourseCollection } from "./CourseCollection";
+import { TeachesEdgeCollection } from "./TeachesEdgeCollection";
 
-const dbServer = new Database();
-const db = dbServer.useDatabase("test");
+// const dbServer = new Database();
+// const db = dbServer.useDatabase("test");
 
 (async () => {
 
@@ -29,5 +32,10 @@ const db = dbServer.useDatabase("test");
     // const result = await query.fetch(db);
     // result[0].courses[0].teacher[0].firstname
     // console.log(inspect(result, false, null, true));
+    
+    const uml = createUML([UserCollection, CourseCollection, TeachesEdgeCollection]);
+    const url = `https://g.gravizo.com/svg?${encodeURI(uml)}`;
+
+    console.log(url);
 
 })();

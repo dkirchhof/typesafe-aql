@@ -1,5 +1,6 @@
 import { Collection } from "./Collection";
-import { prettifyQuery, createProxy } from "./utils";
+import { createProxy } from "./utils/createProxy";
+import { prettifyQuery } from "./utils/prettifyQuery";
 import { RelationDirection } from "./RelationDirection";
 import { EdgeCollection } from "./EdgeCollection";
 

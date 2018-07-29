@@ -1,6 +1,4 @@
 import chalk from "chalk";
-import { Collection } from "./Collection";
-import { Field } from "./Field";
 
 const KEYWORDS = [
     "FOR",
@@ -10,17 +8,6 @@ const KEYWORDS = [
     "INBOUND",
     "ANY",
 ];
-
-export function createProxy(collection: Collection, variable: string) {
-    return new Proxy(collection, {
-        get: (target: any, key) => { 
-            if(target[key] instanceof Field) {
-                return `${variable}.${key.toString()}`;
-            }
-            return target[key]; 
-        }
-    });
-}
 
 export function prettifyQuery(query: string, spaces = 2) {
     let indentation = 0;

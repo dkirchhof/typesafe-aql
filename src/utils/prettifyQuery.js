@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const chalk_1 = require("chalk");
-const Field_1 = require("./Field");
 const KEYWORDS = [
     "FOR",
     "IN",
@@ -10,17 +9,6 @@ const KEYWORDS = [
     "INBOUND",
     "ANY",
 ];
-function createProxy(collection, variable) {
-    return new Proxy(collection, {
-        get: (target, key) => {
-            if (target[key] instanceof Field_1.Field) {
-                return `${variable}.${key.toString()}`;
-            }
-            return target[key];
-        }
-    });
-}
-exports.createProxy = createProxy;
 function prettifyQuery(query, spaces = 2) {
     let indentation = 0;
     const indented = query

@@ -1,6 +1,8 @@
 import { Field } from "./Field";
 import { QueryBuilder } from "./QueryBuilder";
 
+export type CollectionConstructorType<Type extends Collection> = { new(...args: any[]): Type };
+
 export class Collection {
     _id = new Field<string>();
     _key = new Field<string>();

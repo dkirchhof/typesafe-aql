@@ -1,17 +1,13 @@
 import { EdgeCollection } from "./EdgeCollection";
 import { RelationQueryBuilder } from "./RelationQueryBuilder";
 import { RelationDirection } from "./RelationDirection";
-import { Collection } from "./Collection";
-
-type ConstructorType<Type extends Collection> = { new(...args: any[]): Type };
+import { Collection, CollectionConstructorType } from "./Collection";
 
 export class Edge<EdgeCollectionType extends EdgeCollection, ToCollectionType extends Collection> {
     constructor(
-        private readonly defaultDirection: RelationDirection,
-        // private readonly edgeName: string, 
-        // private readonly collectionConstructor: { new(...args: any[]): CollectionType }
-        private readonly edgeCollection: ConstructorType<EdgeCollectionType>,
-        private readonly toCollection: ConstructorType<ToCollectionType>,
+        public readonly defaultDirection: RelationDirection,
+        public readonly edgeCollection: CollectionConstructorType<EdgeCollectionType>,
+        public readonly toCollection: CollectionConstructorType<ToCollectionType>,
     ) {
 
     }

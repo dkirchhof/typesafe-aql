@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const utils_1 = require("./utils");
+const createProxy_1 = require("./utils/createProxy");
+const prettifyQuery_1 = require("./utils/prettifyQuery");
 const RelationQueryBuilder_1 = require("./RelationQueryBuilder");
 class QueryBuilder {
     constructor(collection, variable) {
@@ -8,7 +9,7 @@ class QueryBuilder {
         this.variable = variable;
     }
     return(schemaCreator) {
-        const proxy = utils_1.createProxy(this.collection, this.variable);
+        const proxy = createProxy_1.createProxy(this.collection, this.variable);
         const schema = schemaCreator(proxy);
         return new ExecutableQuery(this.collection._collectionName, this.variable, schema);
     }
@@ -28,7 +29,7 @@ class ExecutableQuery {
             return `${alias}: ${field}`;
         }).join(",\n");
         const query = `FOR ${this.variable} IN ${this.collectionName}\nRETURN {\n${fields}\n}`;
-        return prettyPrint ? utils_1.prettifyQuery(query) : query;
+        return prettyPrint ? prettifyQuery_1.prettifyQuery(query) : query;
     }
     async fetch(db) {
         // return { } as MappedSchema<Schema>;

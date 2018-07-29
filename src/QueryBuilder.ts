@@ -1,6 +1,7 @@
 import { Database } from "arangojs";
 import { Collection } from "./Collection";
-import { createProxy, prettifyQuery } from "./utils";
+import { createProxy } from "./utils/createProxy";
+import { prettifyQuery } from "./utils/prettifyQuery";
 import { ExecutableRelationQuery } from "./RelationQueryBuilder";
 import { MappedSchema } from "./Schema";
 
