@@ -8,8 +8,15 @@ import { getMissingCollections, createMissingCollections } from "../utils/migrat
 const dbServer = new Database();
 const db = dbServer.useDatabase("test");
 
-(async () => {
+runExample();
 
+async function runExample() {
+    // await migrationTest();
+    // await queryTest();
+    // await umlTest();
+}
+
+async function queryTest() {
     const userCollection = arangoStore.getDocumentCollection(UserCollection);
 
     const query = userCollection.createQuery("u")
@@ -32,14 +39,16 @@ const db = dbServer.useDatabase("test");
     console.log(query.toAQL(true));
 
     const result = await query.fetch(db);
-    // result[0].courses[0].teacher[0].firstname
     console.log(inspect(result, false, null, true));
+}
 
-    // const uml = createUML(arangoStore.allCollections);
-    // const url = `https://g.gravizo.com/svg?${encodeURI(uml)}`;
-    // console.log(url);
+async function umlTest() {
+    const uml = createUML(arangoStore.allCollections);
+    const url = `https://g.gravizo.com/svg?${encodeURI(uml)}`;
+    console.log(url);
+}
 
-    // const missingCollections = await getMissingCollections(db, arangoStore.allCollections);
-    // await createMissingCollections(db, missingCollections);
-
-})();
+async function migrationTest() {
+    const missingCollections = await getMissingCollections(db, arangoStore.allCollections);
+    await createMissingCollections(db, missingCollections);
+}

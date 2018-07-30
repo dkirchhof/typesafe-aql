@@ -39,7 +39,8 @@ export class RelationQuery<Schema> {
         const fields = Object.entries(this.schema).map(([alias, field]) => {
 
             if(field instanceof RelationQuery) {
-                return `${alias}: (\n${field.toAQL(this.variable)}\n)`;
+                const vertexVariable = `${this.variable}_v`;
+                return `${alias}: (\n${field.toAQL(vertexVariable)}\n)`;
             }
 
             return `${alias}: ${field}`;
