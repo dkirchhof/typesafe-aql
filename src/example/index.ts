@@ -4,6 +4,7 @@ import { inspect } from "util";
 import { createUML } from "../utils/createUML";
 import { CourseCollection } from "./CourseCollection";
 import { TeachesEdgeCollection } from "./TeachesEdgeCollection";
+import { arangoStore } from "../Store";
 
 // const dbServer = new Database();
 // const db = dbServer.useDatabase("test");
@@ -33,6 +34,9 @@ import { TeachesEdgeCollection } from "./TeachesEdgeCollection";
     // result[0].courses[0].teacher[0].firstname
     // console.log(inspect(result, false, null, true));
     
+    console.log(arangoStore.documentCollections);
+    console.log(arangoStore.edgeCollections);
+
     const uml = createUML([UserCollection, CourseCollection, TeachesEdgeCollection]);
     const url = `https://g.gravizo.com/svg?${encodeURI(uml)}`;
 
