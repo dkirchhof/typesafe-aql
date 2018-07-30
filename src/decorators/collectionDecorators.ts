@@ -3,12 +3,12 @@ import { CollectionConstructorType } from "../collections/Collection";
 
 export function DocumentCollectionDescriptor(collectionName: string) {
     return function(target: CollectionConstructorType<any>) {
-        arangoStore.documentCollections.set(target.name, new target(collectionName));
+        arangoStore.registerDocumentCollection(target, collectionName);
     }
 }
 
 export function EdgeCollectionDescriptor(collectionName: string) {
     return function(target: CollectionConstructorType<any>) {
-        arangoStore.edgeCollections.set(target.name, new target(collectionName));
+        arangoStore.registerEdgeCollection(target, collectionName);
     }
 }

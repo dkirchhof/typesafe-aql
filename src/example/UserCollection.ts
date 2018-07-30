@@ -10,7 +10,5 @@ export class UserCollection extends DocumentCollection {
     firstname = new Field<string>();
     lastname = new Field<string>();
     age = new Field<number>();
-    teaches = new Edge("OUTBOUND", TeachesEdgeCollection, CourseCollection);
+    teaches = new Edge("OUTBOUND", () => TeachesEdgeCollection, () => CourseCollection);
 }
-
-export const userCollection = new UserCollection("users");

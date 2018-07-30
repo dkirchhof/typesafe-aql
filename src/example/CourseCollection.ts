@@ -8,7 +8,5 @@ import { DocumentCollectionDescriptor } from "../decorators/collectionDecorators
 @DocumentCollectionDescriptor("courses")
 export class CourseCollection extends DocumentCollection {
     name = new Field<string>();
-    taughtBy = new Edge("INBOUND", TeachesEdgeCollection, UserCollection);
+    taughtBy = new Edge("INBOUND", () => TeachesEdgeCollection, () => UserCollection);
 }
-
-export const courseCollection = new CourseCollection("courses");

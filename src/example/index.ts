@@ -1,13 +1,15 @@
 import { Database } from "arangojs";
-import { userCollection } from "./UserCollection";
 import { inspect } from "util";
 import { createUML } from "../utils/createUML";
 import { arangoStore } from "../Store";
+import { UserCollection } from "./UserCollection";
 
 // const dbServer = new Database();
 // const db = dbServer.useDatabase("test");
 
 (async () => {
+
+    const userCollection = arangoStore.getDocumentCollection(UserCollection);
 
     const query = userCollection.createQuery("u")
         .return(u => ({ 
@@ -31,13 +33,9 @@ import { arangoStore } from "../Store";
     // const result = await query.fetch(db);
     // result[0].courses[0].teacher[0].firstname
     // console.log(inspect(result, false, null, true));
-    
-    console.log(arangoStore.documentCollections);
-    console.log(arangoStore.edgeCollections);
 
-    // const uml = createUML([UserCollection, CourseCollection, TeachesEdgeCollection]);
-    // const url = `https://g.gravizo.com/svg?${encodeURI(uml)}`;
-
-    // console.log(url);
+    const uml = createUML(arangoStore.allCollections);
+    const url = `https://g.gravizo.com/svg?${encodeURI(uml)}`;
+    console.log(url);
 
 })();

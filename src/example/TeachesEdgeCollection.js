@@ -14,4 +14,3 @@ TeachesEdgeCollection = __decorate([
     collectionDecorators_1.EdgeCollectionDescriptor("teaches")
 ], TeachesEdgeCollection);
 exports.TeachesEdgeCollection = TeachesEdgeCollection;
-exports.teachesEdgeCollection = new TeachesEdgeCollection("teaches");

@@ -7,13 +7,16 @@ const Edge_1 = require("../collectionMetadata/Edge");
 function createUML(collections) {
     const nodes = [];
     const edges = [];
-    collections.forEach(collectionConstructor => {
-        nodes.push(collectionConstructor.name);
-        const collection = new collectionConstructor();
+    collections.forEach(collection => {
+        const className = collection.constructor.name;
+        nodes.push(className);
         Object.entries(collection).forEach(([key, value]) => {
             if (value instanceof Edge_1.Edge) {
-                edges.push(`${collectionConstructor.name} -> ${value.edgeCollection.name} [label=${key.toString()}, arrowhead=none]`);
-                edges.push(`${value.edgeCollection.name} -> ${value.toCollection.name} [label=${key.toString()}]`);
+                const edgeName = key.toString();
+                const edgeCollectionClassName = value.edgeCollection.constructor.name;
+                const toCollectionClassName = value.toCollection.constructor.name;
+                edges.push(`${className} -> ${edgeCollectionClassName} [label=${edgeName}, arrowhead=none]`);
+                edges.push(`${edgeCollectionClassName} -> ${toCollectionClassName} [label=${edgeName}]`);
             }
         });
     });

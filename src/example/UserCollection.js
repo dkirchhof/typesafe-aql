@@ -18,11 +18,10 @@ let UserCollection = class UserCollection extends DocumentCollection_1.DocumentC
         this.firstname = new Field_1.Field();
         this.lastname = new Field_1.Field();
         this.age = new Field_1.Field();
-        this.teaches = new Edge_1.Edge("OUTBOUND", TeachesEdgeCollection_1.TeachesEdgeCollection, CourseCollection_1.CourseCollection);
+        this.teaches = new Edge_1.Edge("OUTBOUND", () => TeachesEdgeCollection_1.TeachesEdgeCollection, () => CourseCollection_1.CourseCollection);
     }
 };
 UserCollection = __decorate([
     collectionDecorators_1.DocumentCollectionDescriptor("users")
 ], UserCollection);
 exports.UserCollection = UserCollection;
-exports.userCollection = new UserCollection("users");
