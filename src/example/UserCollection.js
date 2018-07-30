@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Collection_1 = require("../Collection");
-const Field_1 = require("../Field");
-const Edge_1 = require("../Edge");
+const DocumentCollection_1 = require("../collections/DocumentCollection");
+const Field_1 = require("../collectionMetadata/Field");
+const Edge_1 = require("../collectionMetadata/Edge");
 const TeachesEdgeCollection_1 = require("./TeachesEdgeCollection");
 const CourseCollection_1 = require("./CourseCollection");
-class UserCollection extends Collection_1.Collection {
+class UserCollection extends DocumentCollection_1.DocumentCollection {
     constructor() {
         super(...arguments);
         this.firstname = new Field_1.Field();

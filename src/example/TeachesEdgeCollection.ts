@@ -1,4 +1,4 @@
-import { EdgeCollection } from "../EdgeCollection";
+import { EdgeCollection } from "../collections/EdgeCollection";
 
 export class TeachesEdgeCollection extends EdgeCollection{
 }

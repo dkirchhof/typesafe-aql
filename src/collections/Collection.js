@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Field_1 = require("./Field");
-const QueryBuilder_1 = require("./QueryBuilder");
+const Field_1 = require("../collectionMetadata/Field");
+const QueryBuilder_1 = require("../queryBuilders/QueryBuilder");
 class Collection {
     constructor(_collectionName) {
         this._collectionName = _collectionName;

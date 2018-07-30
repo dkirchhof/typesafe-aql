@@ -1,14 +1,14 @@
-import { Collection } from "./Collection";
-import { createProxy } from "./utils/createProxy";
-import { prettifyQuery } from "./utils/prettifyQuery";
-import { RelationDirection } from "./RelationDirection";
-import { EdgeCollection } from "./EdgeCollection";
+import { DocumentCollection } from "../collections/DocumentCollection";
+import { createProxy } from "../utils/createProxy";
+import { prettifyQuery } from "../utils/prettifyQuery";
+import { EdgeCollection } from "../collections/EdgeCollection";
+import { EdgeDirection } from "../collectionMetadata/Edge";
 
-export class RelationQueryBuilder<EdgeCollectionType extends EdgeCollection, ToCollectionType extends Collection> {
+export class RelationQueryBuilder<EdgeCollectionType extends EdgeCollection, ToCollectionType extends DocumentCollection> {
 
     constructor(
         private readonly variable: string,
-        private readonly direction: RelationDirection,
+        private readonly direction: EdgeDirection,
         private readonly edgeCollection: EdgeCollectionType,
         private readonly toCollection: ToCollectionType,
     ) {
@@ -20,15 +20,15 @@ export class RelationQueryBuilder<EdgeCollectionType extends EdgeCollection, ToC
         const edgeCollectionProxy = createProxy(this.edgeCollection, `${this.variable}_e`);
         const schema = schemaCreator(toCollectionProxy, edgeCollectionProxy);
 
-        return new ExecutableRelationQuery<Schema>(this.variable, this.direction, this.edgeCollection._collectionName, schema);
+        return new RelationQuery<Schema>(this.variable, this.direction, this.edgeCollection._collectionName, schema);
     }
 }
 
-export class ExecutableRelationQuery<Schema> {
+export class RelationQuery<Schema> {
 
     constructor(
         private readonly variable: string,
-        private readonly direction: RelationDirection,
+        private readonly direction: EdgeDirection,
         private readonly edgeName: string,
         private readonly schema: Schema) {
 
@@ -38,7 +38,7 @@ export class ExecutableRelationQuery<Schema> {
 
         const fields = Object.entries(this.schema).map(([alias, field]) => {
 
-            if(field instanceof ExecutableRelationQuery) {
+            if(field instanceof RelationQuery) {
                 return `${alias}: (\n${field.toAQL(this.variable)}\n)`;
             }
 

@@ -1,5 +1,5 @@
-import { Collection } from "../Collection";
-import { Field } from "../Field";
+import { Collection } from "../collections/Collection";
+import { Field } from "../collectionMetadata/Field";
 
 export function createProxy(collection: Collection, variable: string) {
     return new Proxy(collection, {

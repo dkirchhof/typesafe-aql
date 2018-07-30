@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const createProxy_1 = require("./utils/createProxy");
-const prettifyQuery_1 = require("./utils/prettifyQuery");
+const createProxy_1 = require("../utils/createProxy");
+const prettifyQuery_1 = require("../utils/prettifyQuery");
 const RelationQueryBuilder_1 = require("./RelationQueryBuilder");
 class QueryBuilder {
     constructor(collection, variable) {
@@ -11,11 +11,11 @@ class QueryBuilder {
     return(schemaCreator) {
         const proxy = createProxy_1.createProxy(this.collection, this.variable);
         const schema = schemaCreator(proxy);
-        return new ExecutableQuery(this.collection._collectionName, this.variable, schema);
+        return new Query(this.collection._collectionName, this.variable, schema);
     }
 }
 exports.QueryBuilder = QueryBuilder;
-class ExecutableQuery {
+class Query {
     constructor(collectionName, variable, schema) {
         this.collectionName = collectionName;
         this.variable = variable;
@@ -23,7 +23,7 @@ class ExecutableQuery {
     }
     toAQL(prettyPrint = false) {
         const fields = Object.entries(this.schema).map(([alias, field]) => {
-            if (field instanceof RelationQueryBuilder_1.ExecutableRelationQuery) {
+            if (field instanceof RelationQueryBuilder_1.RelationQuery) {
                 return `${alias}: (\n${field.toAQL(this.variable)}\n)`;
             }
             return `${alias}: ${field}`;
@@ -38,4 +38,4 @@ class ExecutableQuery {
         return result.all();
     }
 }
-exports.ExecutableQuery = ExecutableQuery;
+exports.Query = Query;

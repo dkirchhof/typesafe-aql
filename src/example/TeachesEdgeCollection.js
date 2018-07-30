@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const EdgeCollection_1 = require("../EdgeCollection");
+const EdgeCollection_1 = require("../collections/EdgeCollection");
 class TeachesEdgeCollection extends EdgeCollection_1.EdgeCollection {
 }
 exports.TeachesEdgeCollection = TeachesEdgeCollection;

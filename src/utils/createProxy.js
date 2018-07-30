@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Field_1 = require("../Field");
+const Field_1 = require("../collectionMetadata/Field");
 function createProxy(collection, variable) {
     return new Proxy(collection, {
         get: (target, key) => {

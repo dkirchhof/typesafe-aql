@@ -1,5 +1,5 @@
-import { CollectionConstructorType } from "../Collection";
-import { Edge } from "../Edge";
+import { CollectionConstructorType } from "../collections/Collection";
+import { Edge } from "../collectionMetadata/Edge";
 
 // digraph G {
 //     "User" -> "Course" [label=teaches, arrowhead=none]

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const RelationQueryBuilder_1 = require("./RelationQueryBuilder");
+const RelationQueryBuilder_1 = require("../queryBuilders/RelationQueryBuilder");
 class Edge {
     constructor(defaultDirection, edgeCollection, toCollection) {
         this.defaultDirection = defaultDirection;

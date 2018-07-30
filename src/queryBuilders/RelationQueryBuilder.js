@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const createProxy_1 = require("./utils/createProxy");
-const prettifyQuery_1 = require("./utils/prettifyQuery");
+const createProxy_1 = require("../utils/createProxy");
+const prettifyQuery_1 = require("../utils/prettifyQuery");
 class RelationQueryBuilder {
     constructor(variable, direction, edgeCollection, toCollection) {
         this.variable = variable;
@@ -13,11 +13,11 @@ class RelationQueryBuilder {
         const toCollectionProxy = createProxy_1.createProxy(this.toCollection, `${this.variable}_v`);
         const edgeCollectionProxy = createProxy_1.createProxy(this.edgeCollection, `${this.variable}_e`);
         const schema = schemaCreator(toCollectionProxy, edgeCollectionProxy);
-        return new ExecutableRelationQuery(this.variable, this.direction, this.edgeCollection._collectionName, schema);
+        return new RelationQuery(this.variable, this.direction, this.edgeCollection._collectionName, schema);
     }
 }
 exports.RelationQueryBuilder = RelationQueryBuilder;
-class ExecutableRelationQuery {
+class RelationQuery {
     constructor(variable, direction, edgeName, schema) {
         this.variable = variable;
         this.direction = direction;
@@ -26,7 +26,7 @@ class ExecutableRelationQuery {
     }
     toAQL(parentVariable, prettyPrint = false) {
         const fields = Object.entries(this.schema).map(([alias, field]) => {
-            if (field instanceof ExecutableRelationQuery) {
+            if (field instanceof RelationQuery) {
                 return `${alias}: (\n${field.toAQL(this.variable)}\n)`;
             }
             return `${alias}: ${field}`;
@@ -37,4 +37,4 @@ class ExecutableRelationQuery {
         return prettyPrint ? prettifyQuery_1.prettifyQuery(query) : query;
     }
 }
-exports.ExecutableRelationQuery = ExecutableRelationQuery;
+exports.RelationQuery = RelationQuery;
