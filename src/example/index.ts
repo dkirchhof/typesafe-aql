@@ -1,9 +1,7 @@
 import { Database } from "arangojs";
-import { userCollection, UserCollection } from "./UserCollection";
+import { userCollection } from "./UserCollection";
 import { inspect } from "util";
 import { createUML } from "../utils/createUML";
-import { CourseCollection } from "./CourseCollection";
-import { TeachesEdgeCollection } from "./TeachesEdgeCollection";
 import { arangoStore } from "../Store";
 
 // const dbServer = new Database();
@@ -37,9 +35,9 @@ import { arangoStore } from "../Store";
     console.log(arangoStore.documentCollections);
     console.log(arangoStore.edgeCollections);
 
-    const uml = createUML([UserCollection, CourseCollection, TeachesEdgeCollection]);
-    const url = `https://g.gravizo.com/svg?${encodeURI(uml)}`;
+    // const uml = createUML([UserCollection, CourseCollection, TeachesEdgeCollection]);
+    // const url = `https://g.gravizo.com/svg?${encodeURI(uml)}`;
 
-    console.log(url);
+    // console.log(url);
 
 })();

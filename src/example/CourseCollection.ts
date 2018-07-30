@@ -3,7 +3,9 @@ import { DocumentCollection } from "../collections/DocumentCollection";
 import { Edge } from "../collectionMetadata/Edge";
 import { TeachesEdgeCollection } from "./TeachesEdgeCollection";
 import { UserCollection } from "./UserCollection";
+import { DocumentCollectionDescriptor } from "../decorators/collectionDecorators";
 
+@DocumentCollectionDescriptor("courses")
 export class CourseCollection extends DocumentCollection {
     name = new Field<string>();
     taughtBy = new Edge("INBOUND", TeachesEdgeCollection, UserCollection);

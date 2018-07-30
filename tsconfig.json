@@ -3,6 +3,7 @@
     "target": "esnext",
     "module": "commonjs",
     "strict": true,
+    "experimentalDecorators": true,
   },
   "include": [
     "./src/**/*.ts"
