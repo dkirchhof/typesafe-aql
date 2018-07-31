@@ -11,3 +11,11 @@ export class BooleanOperator {
         return `(${this.operands.join(` ${this.type} `)})`;
     }
 }
+
+export function and(...operands: any[]) {
+    return new BooleanOperator("AND", ...operands);
+}
+
+export function or(...operands: any[]) {
+    return new BooleanOperator("OR", ...operands);
+}

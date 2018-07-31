@@ -4,9 +4,8 @@ import { createUML } from "../utils/createUML";
 import { arangoStore } from "../Store";
 import { UserCollection } from "./UserCollection";
 import { getMissingCollections, createMissingCollections } from "../utils/migration";
-import { and } from "../queryBuilders/booleanOperators/and";
-import { or } from "../queryBuilders/booleanOperators/or";
 import { Predicate } from "../queryBuilders/Predicate";
+import { or } from "../queryBuilders/BooleanOperator";
 
 const dbServer = new Database();
 const db = dbServer.useDatabase("test");
@@ -23,10 +22,11 @@ async function queryTest() {
     const userCollection = arangoStore.getDocumentCollection(UserCollection);
 
     const query = userCollection.createQuery("u")
-        .filter(u => new Predicate(u.firstname, "==", "1"))
-        .filter(u => new Predicate(u.firstname, "==", u.lastname))
-        // .filter(and("a", or("b", "c")))
-        // .filter(or("d", "e"))
+        .filter(u => new Predicate(u.age, ">=", 18))
+        .filter(u => or(
+            new Predicate(u.firstname, "==", u.lastname), 
+            new Predicate(u.age, ">=", 100)
+        ))
         .return(u => ({ 
             id: u._id,
             firstname: u.firstname,

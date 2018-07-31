@@ -6,6 +6,7 @@ const Store_1 = require("../Store");
 const UserCollection_1 = require("./UserCollection");
 const migration_1 = require("../utils/migration");
 const Predicate_1 = require("../queryBuilders/Predicate");
+const BooleanOperator_1 = require("../queryBuilders/BooleanOperator");
 const dbServer = new arangojs_1.Database();
 const db = dbServer.useDatabase("test");
 runExample();
@@ -17,10 +18,8 @@ async function runExample() {
 async function queryTest() {
     const userCollection = Store_1.arangoStore.getDocumentCollection(UserCollection_1.UserCollection);
     const query = userCollection.createQuery("u")
-        .filter(u => new Predicate_1.Predicate(u.firstname, "==", "1"))
-        .filter(u => new Predicate_1.Predicate(u.firstname, "==", u.lastname))
-        // .filter(and("a", or("b", "c")))
-        // .filter(or("d", "e"))
+        .filter(u => new Predicate_1.Predicate(u.age, ">=", 18))
+        .filter(u => BooleanOperator_1.or(new Predicate_1.Predicate(u.firstname, "==", u.lastname), new Predicate_1.Predicate(u.age, ">=", 100)))
         .return(u => ({
         id: u._id,
         firstname: u.firstname,

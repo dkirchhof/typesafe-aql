@@ -1,5 +1,4 @@
 import { DocumentCollection } from "../collections/DocumentCollection";
-import { createProxy } from "../utils/createProxy";
 import { prettifyQuery } from "../utils/prettifyQuery";
 import { EdgeCollection } from "../collections/EdgeCollection";
 import { EdgeDirection } from "../collectionMetadata/Edge";

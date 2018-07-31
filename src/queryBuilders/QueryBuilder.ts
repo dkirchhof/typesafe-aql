@@ -1,6 +1,6 @@
 import { Collection } from "../collections/Collection";
 import { Predicate } from "./Predicate";
-import { BooleanOperator } from "./booleanOperators/BooleanOperator";
+import { BooleanOperator } from "./BooleanOperator";
 import { Field } from "../collectionMetadata/Field";
 
 type Filter = Predicate<any> | BooleanOperator;

@@ -10,3 +10,11 @@ class BooleanOperator {
     }
 }
 exports.BooleanOperator = BooleanOperator;
+function and(...operands) {
+    return new BooleanOperator("AND", ...operands);
+}
+exports.and = and;
+function or(...operands) {
+    return new BooleanOperator("OR", ...operands);
+}
+exports.or = or;

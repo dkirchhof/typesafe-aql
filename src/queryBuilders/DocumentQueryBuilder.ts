@@ -3,7 +3,7 @@ import { Collection } from "../collections/Collection";
 import { prettifyQuery } from "../utils/prettifyQuery";
 import { RelationQuery } from "./RelationQueryBuilder";
 import { MappedSchema } from "./Schema";
-import { BooleanOperator } from "./booleanOperators/BooleanOperator";
+import { BooleanOperator } from "./BooleanOperator";
 import { Predicate } from "./Predicate";
 import { QueryBuilder } from "./QueryBuilder";
 
