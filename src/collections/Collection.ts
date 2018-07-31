@@ -1,5 +1,4 @@
 import { Field } from "../collectionMetadata/Field";
-import { DocumentQueryBuilder } from "../queryBuilders/DocumentQueryBuilder";
 
 export type CollectionConstructorType<Type extends Collection> = { new(...args: any[]): Type };
 
@@ -10,9 +9,5 @@ export abstract class Collection {
 
     constructor(public readonly _collectionName: string) {
         
-    }
-
-    createQuery(variable: string) {
-        return new DocumentQueryBuilder(variable, this);
     }
 }
