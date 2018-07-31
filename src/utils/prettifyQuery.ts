@@ -3,6 +3,9 @@ import chalk from "chalk";
 const KEYWORDS = [
     "FOR",
     "IN",
+    "FILTER",
+    "AND",
+    "OR",
     "RETURN",
     "OUTBOUND",
     "INBOUND",
@@ -15,13 +18,13 @@ export function prettifyQuery(query: string, spaces = 2) {
     const indented = query
         .split("\n")
         .map(line => {
-            if(line.endsWith("}") || line.endsWith(")")) {
+            if(!line.startsWith("FILTER") && (line.endsWith("}") || line.endsWith(")"))) {
                 indentation--;
             }
 
             const indentedLine = `${" ".repeat(indentation * spaces)}${line}`;
             
-            if(line.endsWith("{") || line.endsWith("(")) {
+            if(!line.startsWith("FILTER") && (line.endsWith("{") || line.endsWith("("))) {
                 indentation++;
             }
 
