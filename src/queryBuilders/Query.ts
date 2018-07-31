@@ -1,5 +1,4 @@
 import { Filter } from "./Filter";
-import { RelationQuery } from "./RelationQuery";
 import { prettifyQuery } from "../utils/prettifyQuery";
 
 export abstract class Query<Schema> {
@@ -25,7 +24,11 @@ export abstract class Query<Schema> {
     private schemaToAQL(): string {
         const fields = Object.entries(this.schema).map(([alias, field]) => {
             
-            if(field instanceof RelationQuery) {
+            if(field.__type === "documentQuery") {
+                return `${alias}: (\n${field.toAQL()}\n)`;
+            }
+
+            if(field.__type === "relationQuery") {
                 return `${alias}: (\n${field.toAQL(this.variable)}\n)`;
             }
 

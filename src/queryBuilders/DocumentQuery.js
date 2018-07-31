@@ -5,6 +5,7 @@ class DocumentQuery extends Query_1.Query {
     constructor(collectionName, variable, filters, schema) {
         super(variable, filters, schema);
         this.collectionName = collectionName;
+        this.__type = "documentQuery";
     }
     toAQL(prettyPrint = false) {
         const loop = `FOR ${this.variable} IN ${this.collectionName}`;

@@ -4,7 +4,8 @@ import { Database } from "../../node_modules/arangojs";
 import { MappedSchema } from "./Schema";
 
 export class DocumentQuery<Schema> extends Query<Schema> {
-    
+    private __type = "documentQuery";
+
     constructor(
         private readonly collectionName: string,
         variable: string,

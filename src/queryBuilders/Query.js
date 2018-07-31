@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const RelationQuery_1 = require("./RelationQuery");
 const prettifyQuery_1 = require("../utils/prettifyQuery");
 class Query {
     constructor(variable, filters, schema) {
@@ -18,7 +17,10 @@ class Query {
     }
     schemaToAQL() {
         const fields = Object.entries(this.schema).map(([alias, field]) => {
-            if (field instanceof RelationQuery_1.RelationQuery) {
+            if (field.__type === "documentQuery") {
+                return `${alias}: (\n${field.toAQL()}\n)`;
+            }
+            if (field.__type === "relationQuery") {
                 return `${alias}: (\n${field.toAQL(this.variable)}\n)`;
             }
             return `${alias}: ${field}`;

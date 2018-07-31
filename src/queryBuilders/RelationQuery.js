@@ -6,6 +6,7 @@ class RelationQuery extends Query_1.Query {
         super(variable, filters, schema);
         this.direction = direction;
         this.edgeName = edgeName;
+        this.__type = "relationQuery";
     }
     toAQL(parentVariable, prettyPrint = false) {
         const edgeVariable = `${this.variable}_edge`;

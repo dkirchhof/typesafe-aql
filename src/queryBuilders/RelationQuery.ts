@@ -3,6 +3,7 @@ import { Filter } from "./Filter";
 import { EdgeDirection } from "../collectionMetadata/Edge";
 
 export class RelationQuery<Schema> extends Query<Schema> {
+    private __type = "relationQuery";
 
     constructor(
         private readonly direction: EdgeDirection,

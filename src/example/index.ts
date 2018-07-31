@@ -46,6 +46,17 @@ async function queryTest() {
     
     console.log(query.toAQL(true));
 
+    const query2 = userCollection.createQuery("u1")
+        .return(u1 => ({
+            name: u1.firstname,
+            others: userCollection.createQuery("u2")
+                .return(u2 => ({
+                    name: u2.firstname
+                }))
+        }));
+
+    console.log(query2.toAQL(true));
+
     // const result = await query.fetch(db);
     // console.log(inspect(result, false, null, true));
 }
