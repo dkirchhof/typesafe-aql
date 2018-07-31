@@ -26,9 +26,9 @@ export class Edge<EdgeCollectionType extends EdgeCollection, ToCollectionType ex
     createQuery(variable: string, direction?: EdgeDirection) {
         return new RelationQueryBuilder(
             variable,
-            direction || this.defaultDirection, 
-            this.edgeCollection,
             this.toCollection,
+            this.edgeCollection,
+            direction || this.defaultDirection, 
         );
     }
 }

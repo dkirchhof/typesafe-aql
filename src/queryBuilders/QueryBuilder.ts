@@ -1,56 +1,36 @@
-import { Database } from "arangojs";
 import { Collection } from "../collections/Collection";
-import { createProxy } from "../utils/createProxy";
-import { prettifyQuery } from "../utils/prettifyQuery";
-import { RelationQuery } from "./RelationQueryBuilder";
-import { MappedSchema } from "./Schema";
+import { Predicate } from "./Predicate";
+import { BooleanOperator } from "./booleanOperators/BooleanOperator";
+import { Field } from "../collectionMetadata/Field";
 
-export class QueryBuilder<CollectionType extends Collection> {
+type Filter = Predicate<any> | BooleanOperator;
+
+export abstract class QueryBuilder<CollectionType extends Collection> {
+    protected readonly collectionProxy: CollectionType;
+    protected readonly filters: Filter[] = [];
 
     constructor(
-        private readonly collection: CollectionType,
-        private readonly variable: string) {
-            
+        protected readonly variable: string, 
+        protected readonly collection: CollectionType
+    ) {        
+        this.collectionProxy = this.createProxy(collection, variable);
     }
 
-    return<Schema>(schemaCreator: (collection: CollectionType) => Schema) {
-        const proxy = createProxy(this.collection, this.variable);
-        const schema = schemaCreator(proxy);
-        return new Query<Schema>(this.collection._collectionName, this.variable, schema);
-    }
-}
+    public filter(filterCreator: (collection: CollectionType) => Filter) {
+        const filter = filterCreator(this.collectionProxy);
+        this.filters.push(filter);
 
-export class Query<Schema> {
-    
-    constructor(
-        private readonly collectionName: string,
-        private readonly variable: string,
-        private readonly schema: Schema) {
-
+        return this;
     }
 
-    toAQL(prettyPrint = false) {
-        const fields = Object.entries(this.schema).map(([alias, field]) => {
-            
-            if(field instanceof RelationQuery) {
-                return `${alias}: (\n${field.toAQL(this.variable)}\n)`;
+    protected createProxy<CollectionType extends Collection>(collection: CollectionType, variable: string): CollectionType {
+        return new Proxy(collection, {
+            get: (target: any, key) => { 
+                if(target[key] instanceof Field) {
+                    return `${variable}.${key.toString()}`;
+                }
+                return target[key]; 
             }
-
-            return `${alias}: ${field}`;
-
-        }).join(",\n");
-
-        const query = `FOR ${this.variable} IN ${this.collectionName}\nRETURN {\n${fields}\n}`;
-
-        return prettyPrint ? prettifyQuery(query) : query;
-    }
-    
-    async fetch(db: Database) {
-        // return { } as MappedSchema<Schema>;
-
-        const query = this.toAQL();
-        const result = await db.query(query);
-
-        return result.all() as Promise<MappedSchema<Schema>[]>;
+        });
     }
 }

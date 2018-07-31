@@ -3,22 +3,23 @@ import { createProxy } from "../utils/createProxy";
 import { prettifyQuery } from "../utils/prettifyQuery";
 import { EdgeCollection } from "../collections/EdgeCollection";
 import { EdgeDirection } from "../collectionMetadata/Edge";
+import { QueryBuilder } from "./QueryBuilder";
 
-export class RelationQueryBuilder<EdgeCollectionType extends EdgeCollection, ToCollectionType extends DocumentCollection> {
+export class RelationQueryBuilder<EdgeCollectionType extends EdgeCollection, ToCollectionType extends DocumentCollection> extends QueryBuilder<ToCollectionType> {
+    private readonly edgeCollectionProxy: EdgeCollectionType;
 
     constructor(
-        private readonly variable: string,
-        private readonly direction: EdgeDirection,
+        variable: string,
+        collection: ToCollectionType,
         private readonly edgeCollection: EdgeCollectionType,
-        private readonly toCollection: ToCollectionType,
+        private readonly direction: EdgeDirection
     ) {
-
+        super(variable, collection);
+        this.edgeCollectionProxy = this.createProxy(edgeCollection, `${variable}_edge`);
     }
 
-    return <Schema>(schemaCreator: (v: ToCollectionType, e?: EdgeCollectionType) => Schema) {
-        const toCollectionProxy = createProxy(this.toCollection, `${this.variable}_v`);
-        const edgeCollectionProxy = createProxy(this.edgeCollection, `${this.variable}_e`);
-        const schema = schemaCreator(toCollectionProxy, edgeCollectionProxy);
+    return <Schema>(schemaCreator: (collection: ToCollectionType, edge?: EdgeCollectionType) => Schema) {
+        const schema = schemaCreator(this.collectionProxy, this.edgeCollectionProxy);
 
         return new RelationQuery<Schema>(this.variable, this.direction, this.edgeCollection._collectionName, schema);
     }
@@ -39,17 +40,15 @@ export class RelationQuery<Schema> {
         const fields = Object.entries(this.schema).map(([alias, field]) => {
 
             if(field instanceof RelationQuery) {
-                const vertexVariable = `${this.variable}_v`;
-                return `${alias}: (\n${field.toAQL(vertexVariable)}\n)`;
+                return `${alias}: (\n${field.toAQL(this.variable)}\n)`;
             }
 
             return `${alias}: ${field}`;
 
         }).join(",\n");
 
-        const vertexVariable = `${this.variable}_v`;
-        const edgeVariable = `${this.variable}_e`;
-        const query = `FOR ${vertexVariable}, ${edgeVariable} IN 1 ${this.direction} ${parentVariable} ${this.edgeName}\nRETURN {\n${fields}\n}`;
+        const edgeVariable = `${this.variable}_edge`;
+        const query = `FOR ${this.variable}, ${edgeVariable} IN 1 ${this.direction} ${parentVariable} ${this.edgeName}\nRETURN {\n${fields}\n}`;
 
         return prettyPrint ? prettifyQuery(query) : query;
     }

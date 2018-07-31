@@ -1,5 +1,5 @@
 import { Field } from "../collectionMetadata/Field";
-import { QueryBuilder } from "../queryBuilders/QueryBuilder";
+import { DocumentQueryBuilder } from "../queryBuilders/DocumentQueryBuilder";
 
 export type CollectionConstructorType<Type extends Collection> = { new(...args: any[]): Type };
 
@@ -13,6 +13,6 @@ export abstract class Collection {
     }
 
     createQuery(variable: string) {
-        return new QueryBuilder(this, variable);
+        return new DocumentQueryBuilder(variable, this);
     }
 }

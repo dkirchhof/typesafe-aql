@@ -1,18 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const createProxy_1 = require("../utils/createProxy");
 const prettifyQuery_1 = require("../utils/prettifyQuery");
-class RelationQueryBuilder {
-    constructor(variable, direction, edgeCollection, toCollection) {
-        this.variable = variable;
-        this.direction = direction;
+const QueryBuilder_1 = require("./QueryBuilder");
+class RelationQueryBuilder extends QueryBuilder_1.QueryBuilder {
+    constructor(variable, collection, edgeCollection, direction) {
+        super(variable, collection);
         this.edgeCollection = edgeCollection;
-        this.toCollection = toCollection;
+        this.direction = direction;
+        this.edgeCollectionProxy = this.createProxy(edgeCollection, `${variable}_edge`);
     }
     return(schemaCreator) {
-        const toCollectionProxy = createProxy_1.createProxy(this.toCollection, `${this.variable}_v`);
-        const edgeCollectionProxy = createProxy_1.createProxy(this.edgeCollection, `${this.variable}_e`);
-        const schema = schemaCreator(toCollectionProxy, edgeCollectionProxy);
+        const schema = schemaCreator(this.collectionProxy, this.edgeCollectionProxy);
         return new RelationQuery(this.variable, this.direction, this.edgeCollection._collectionName, schema);
     }
 }
@@ -27,14 +25,12 @@ class RelationQuery {
     toAQL(parentVariable, prettyPrint = false) {
         const fields = Object.entries(this.schema).map(([alias, field]) => {
             if (field instanceof RelationQuery) {
-                const vertexVariable = `${this.variable}_v`;
-                return `${alias}: (\n${field.toAQL(vertexVariable)}\n)`;
+                return `${alias}: (\n${field.toAQL(this.variable)}\n)`;
             }
             return `${alias}: ${field}`;
         }).join(",\n");
-        const vertexVariable = `${this.variable}_v`;
-        const edgeVariable = `${this.variable}_e`;
-        const query = `FOR ${vertexVariable}, ${edgeVariable} IN 1 ${this.direction} ${parentVariable} ${this.edgeName}\nRETURN {\n${fields}\n}`;
+        const edgeVariable = `${this.variable}_edge`;
+        const query = `FOR ${this.variable}, ${edgeVariable} IN 1 ${this.direction} ${parentVariable} ${this.edgeName}\nRETURN {\n${fields}\n}`;
         return prettyPrint ? prettifyQuery_1.prettifyQuery(query) : query;
     }
 }

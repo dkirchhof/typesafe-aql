@@ -15,7 +15,7 @@ class Edge {
         return Store_1.arangoStore.getDocumentCollection(this.getToCollectionClass());
     }
     createQuery(variable, direction) {
-        return new RelationQueryBuilder_1.RelationQueryBuilder(variable, direction || this.defaultDirection, this.edgeCollection, this.toCollection);
+        return new RelationQueryBuilder_1.RelationQueryBuilder(variable, this.toCollection, this.edgeCollection, direction || this.defaultDirection);
     }
 }
 exports.Edge = Edge;
