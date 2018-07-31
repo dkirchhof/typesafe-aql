@@ -45,7 +45,7 @@ async function queryTest() {
         }))
     }));
     console.log(query2.toAQL(true));
-    // const result = await query.fetch(db);
+    // const result = await query.fetch(db); result[0].courses[0].teacher[0].firstname
     // console.log(inspect(result, false, null, true));
 }
 async function umlTest() {

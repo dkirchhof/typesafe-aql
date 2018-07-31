@@ -1,44 +1,37 @@
-import { Filter } from "./Filter";
 import { prettifyQuery } from "../utils/prettifyQuery";
+import { IQueryOptions } from "./QueryOptions";
 
-export abstract class Query<Schema> {
+export abstract class Query {
     
-    constructor(
-        protected readonly variable: string,
-        private readonly filters: Filter[],
-        private readonly limit: number | undefined,
-        private readonly schema: Schema
-    ) {
-
-    }
+    constructor(protected readonly options: IQueryOptions) { }
 
     private filtersToAQL() {
-        if(!this.filters.length) {
+        if(!this.options.filters.length) {
             return null;
         }
 
-        return this.filters
+        return this.options.filters
             .map(filter => `FILTER ${filter}`)
             .join("\n");
     }
 
     private limitToAQL() {
-        if(!this.limit) {
+        if(!this.options.limit) {
             return null;
         }
 
-        return `LIMIT ${this.limit}`;
+        return `LIMIT ${this.options.limit}`;
     }
 
-    private schemaToAQL(): string {
-        const fields = Object.entries(this.schema).map(([alias, field]) => {
+    private schemaToAQL() {
+        const fields = Object.entries(this.options.schema).map(([alias, field]) => {
             
             if(field.__type === "documentQuery") {
                 return `${alias}: (\n${field.toAQL()}\n)`;
             }
 
             if(field.__type === "relationQuery") {
-                return `${alias}: (\n${field.toAQL(this.variable)}\n)`;
+                return `${alias}: (\n${field.toAQL(this.options.variable)}\n)`;
             }
 
             return `${alias}: ${field}`;

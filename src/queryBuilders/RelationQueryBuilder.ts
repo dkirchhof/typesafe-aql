@@ -17,15 +17,9 @@ export class RelationQueryBuilder<EdgeCollectionType extends EdgeCollection, ToC
         this.edgeCollectionProxy = this.createProxy(edgeCollection, `${variable}_edge`);
     }
 
-    return <Schema>(schemaCreator: (collection: ToCollectionType, edge?: EdgeCollectionType) => Schema) {
-        const schema = schemaCreator(this.collectionProxy, this.edgeCollectionProxy);
+    return <Schema extends object>(schemaCreator: (collection: ToCollectionType, edge?: EdgeCollectionType) => Schema) {
+        this.options.schema = schemaCreator(this.collectionProxy, this.edgeCollectionProxy);
 
-        return new RelationQuery<Schema>(
-            this.direction, 
-            this.edgeCollection._collectionName, 
-            this.variable, 
-            this.filters, 
-            this.limitTo,
-            schema);
+        return new RelationQuery<Schema>(this.direction, this.edgeCollection._collectionName, this.options);
     }
 }

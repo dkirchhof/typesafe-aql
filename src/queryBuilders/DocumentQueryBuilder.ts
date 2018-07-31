@@ -4,14 +4,9 @@ import { DocumentQuery } from "./DocumentQuery";
 
 export class DocumentQueryBuilder<CollectionType extends Collection> extends QueryBuilder<CollectionType> {
 
-    return<Schema>(schemaCreator: (collection: CollectionType) => Schema) {
-        const schema = schemaCreator(this.collectionProxy);
+    return<Schema extends object>(schemaCreator: (collection: CollectionType) => Schema) {
+        this.options.schema = schemaCreator(this.collectionProxy);
 
-        return new DocumentQuery<Schema>(
-            this.collection._collectionName, 
-            this.variable, 
-            this.filters, 
-            this.limitTo,
-            schema);
+        return new DocumentQuery<Schema>(this.collection._collectionName, this.options);
     }
 }

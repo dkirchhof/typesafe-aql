@@ -3,18 +3,23 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Field_1 = require("../collectionMetadata/Field");
 class QueryBuilder {
     constructor(variable, collection) {
-        this.variable = variable;
         this.collection = collection;
-        this.filters = [];
+        this.options = {
+            variable: "",
+            filters: [],
+            limit: null,
+            schema: {},
+        };
         this.collectionProxy = this.createProxy(collection, variable);
+        this.options.variable = variable;
     }
     filter(filterCreator) {
         const filter = filterCreator(this.collectionProxy);
-        this.filters.push(filter);
+        this.options.filters.push(filter);
         return this;
     }
     limit(value) {
-        this.limitTo = value;
+        this.options.limit = value;
         return this;
     }
     createProxy(collection, variable) {

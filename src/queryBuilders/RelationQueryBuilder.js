@@ -10,8 +10,8 @@ class RelationQueryBuilder extends QueryBuilder_1.QueryBuilder {
         this.edgeCollectionProxy = this.createProxy(edgeCollection, `${variable}_edge`);
     }
     return(schemaCreator) {
-        const schema = schemaCreator(this.collectionProxy, this.edgeCollectionProxy);
-        return new RelationQuery_1.RelationQuery(this.direction, this.edgeCollection._collectionName, this.variable, this.filters, this.limitTo, schema);
+        this.options.schema = schemaCreator(this.collectionProxy, this.edgeCollectionProxy);
+        return new RelationQuery_1.RelationQuery(this.direction, this.edgeCollection._collectionName, this.options);
     }
 }
 exports.RelationQueryBuilder = RelationQueryBuilder;

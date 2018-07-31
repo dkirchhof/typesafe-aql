@@ -2,33 +2,30 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const prettifyQuery_1 = require("../utils/prettifyQuery");
 class Query {
-    constructor(variable, filters, limit, schema) {
-        this.variable = variable;
-        this.filters = filters;
-        this.limit = limit;
-        this.schema = schema;
+    constructor(options) {
+        this.options = options;
     }
     filtersToAQL() {
-        if (!this.filters.length) {
+        if (!this.options.filters.length) {
             return null;
         }
-        return this.filters
+        return this.options.filters
             .map(filter => `FILTER ${filter}`)
             .join("\n");
     }
     limitToAQL() {
-        if (!this.limit) {
+        if (!this.options.limit) {
             return null;
         }
-        return `LIMIT ${this.limit}`;
+        return `LIMIT ${this.options.limit}`;
     }
     schemaToAQL() {
-        const fields = Object.entries(this.schema).map(([alias, field]) => {
+        const fields = Object.entries(this.options.schema).map(([alias, field]) => {
             if (field.__type === "documentQuery") {
                 return `${alias}: (\n${field.toAQL()}\n)`;
             }
             if (field.__type === "relationQuery") {
-                return `${alias}: (\n${field.toAQL(this.variable)}\n)`;
+                return `${alias}: (\n${field.toAQL(this.options.variable)}\n)`;
             }
             return `${alias}: ${field}`;
         }).join(",\n");

@@ -1,24 +1,17 @@
 import { Query } from "./Query";
-import { Filter } from "./Filter";
 import { EdgeDirection } from "../collectionMetadata/Edge";
+import { IQueryOptions } from "./QueryOptions";
 
-export class RelationQuery<Schema> extends Query<Schema> {
+export class RelationQuery<Schema> extends Query {
     private __type = "relationQuery";
 
-    constructor(
-        private readonly direction: EdgeDirection,
-        private readonly edgeName: string,
-        variable: string,
-        filters: Filter[],
-        limit: number | undefined,
-        schema: Schema
-    ) {
-        super(variable, filters, limit, schema);
+    constructor(private readonly direction: EdgeDirection, private readonly edgeName: string, options: IQueryOptions) {
+        super(options);
     }
 
     public toAQL(parentVariable: string, prettyPrint = false) {
-        const edgeVariable = `${this.variable}_edge`;
-        const loop = `FOR ${this.variable}, ${edgeVariable} IN 1 ${this.direction} ${parentVariable} ${this.edgeName}`;
+        const edgeVariable = `${this.options.variable}_edge`;
+        const loop = `FOR ${this.options.variable}, ${edgeVariable} IN 1 ${this.direction} ${parentVariable} ${this.edgeName}`;
 
         return this.queryToAQL(loop, prettyPrint);
     }
