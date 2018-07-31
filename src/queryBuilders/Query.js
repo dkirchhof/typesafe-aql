@@ -2,9 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const prettifyQuery_1 = require("../utils/prettifyQuery");
 class Query {
-    constructor(variable, filters, schema) {
+    constructor(variable, filters, limit, schema) {
         this.variable = variable;
         this.filters = filters;
+        this.limit = limit;
         this.schema = schema;
     }
     filtersToAQL() {
@@ -14,6 +15,12 @@ class Query {
         return this.filters
             .map(filter => `FILTER ${filter}`)
             .join("\n");
+    }
+    limitToAQL() {
+        if (!this.limit) {
+            return null;
+        }
+        return `LIMIT ${this.limit}`;
     }
     schemaToAQL() {
         const fields = Object.entries(this.schema).map(([alias, field]) => {
@@ -31,6 +38,7 @@ class Query {
         const query = [
             loop,
             this.filtersToAQL(),
+            this.limitToAQL(),
             this.schemaToAQL(),
         ]
             .filter(Boolean)

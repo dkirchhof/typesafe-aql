@@ -7,6 +7,11 @@ export class DocumentQueryBuilder<CollectionType extends Collection> extends Que
     return<Schema>(schemaCreator: (collection: CollectionType) => Schema) {
         const schema = schemaCreator(this.collectionProxy);
 
-        return new DocumentQuery<Schema>(this.collection._collectionName, this.variable, this.filters, schema);
+        return new DocumentQuery<Schema>(
+            this.collection._collectionName, 
+            this.variable, 
+            this.filters, 
+            this.limitTo,
+            schema);
     }
 }

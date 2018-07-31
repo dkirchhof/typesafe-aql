@@ -6,6 +6,7 @@ export abstract class Query<Schema> {
     constructor(
         protected readonly variable: string,
         private readonly filters: Filter[],
+        private readonly limit: number | undefined,
         private readonly schema: Schema
     ) {
 
@@ -19,6 +20,14 @@ export abstract class Query<Schema> {
         return this.filters
             .map(filter => `FILTER ${filter}`)
             .join("\n");
+    }
+
+    private limitToAQL() {
+        if(!this.limit) {
+            return null;
+        }
+
+        return `LIMIT ${this.limit}`;
     }
 
     private schemaToAQL(): string {
@@ -43,6 +52,7 @@ export abstract class Query<Schema> {
         const query = [
             loop,
             this.filtersToAQL(),
+            this.limitToAQL(),
             this.schemaToAQL(),
         ]
         .filter(Boolean)

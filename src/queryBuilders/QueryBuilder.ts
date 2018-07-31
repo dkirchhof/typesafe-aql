@@ -5,6 +5,7 @@ import { Filter } from "./Filter";
 export abstract class QueryBuilder<CollectionType extends Collection> {
     protected readonly collectionProxy: CollectionType;
     protected readonly filters: Filter[] = [];
+    protected limitTo?: number; 
 
     constructor(
         protected readonly variable: string, 
@@ -16,6 +17,12 @@ export abstract class QueryBuilder<CollectionType extends Collection> {
     public filter(filterCreator: (collection: CollectionType) => Filter) {
         const filter = filterCreator(this.collectionProxy);
         this.filters.push(filter);
+
+        return this;
+    }
+
+    public limit(value: number) {
+        this.limitTo = value;
 
         return this;
     }

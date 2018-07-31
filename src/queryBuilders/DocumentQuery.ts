@@ -10,9 +10,10 @@ export class DocumentQuery<Schema> extends Query<Schema> {
         private readonly collectionName: string,
         variable: string,
         filters: Filter[],
+        limit: number | undefined,
         schema: Schema
     ) {    
-        super(variable, filters, schema);
+        super(variable, filters, limit, schema);
     }
 
     public toAQL(prettyPrint = false) {

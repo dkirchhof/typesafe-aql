@@ -20,6 +20,12 @@ export class RelationQueryBuilder<EdgeCollectionType extends EdgeCollection, ToC
     return <Schema>(schemaCreator: (collection: ToCollectionType, edge?: EdgeCollectionType) => Schema) {
         const schema = schemaCreator(this.collectionProxy, this.edgeCollectionProxy);
 
-        return new RelationQuery<Schema>(this.direction, this.edgeCollection._collectionName, this.variable, this.filters, schema);
+        return new RelationQuery<Schema>(
+            this.direction, 
+            this.edgeCollection._collectionName, 
+            this.variable, 
+            this.filters, 
+            this.limitTo,
+            schema);
     }
 }

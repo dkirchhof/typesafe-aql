@@ -10,9 +10,10 @@ export class RelationQuery<Schema> extends Query<Schema> {
         private readonly edgeName: string,
         variable: string,
         filters: Filter[],
+        limit: number | undefined,
         schema: Schema
     ) {
-        super(variable, filters, schema);
+        super(variable, filters, limit, schema);
     }
 
     public toAQL(parentVariable: string, prettyPrint = false) {

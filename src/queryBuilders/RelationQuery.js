@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const Query_1 = require("./Query");
 class RelationQuery extends Query_1.Query {
-    constructor(direction, edgeName, variable, filters, schema) {
-        super(variable, filters, schema);
+    constructor(direction, edgeName, variable, filters, limit, schema) {
+        super(variable, filters, limit, schema);
         this.direction = direction;
         this.edgeName = edgeName;
         this.__type = "relationQuery";

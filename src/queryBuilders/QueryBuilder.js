@@ -13,6 +13,10 @@ class QueryBuilder {
         this.filters.push(filter);
         return this;
     }
+    limit(value) {
+        this.limitTo = value;
+        return this;
+    }
     createProxy(collection, variable) {
         return new Proxy(collection, {
             get: (target, key) => {

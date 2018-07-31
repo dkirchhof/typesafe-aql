@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const Query_1 = require("./Query");
 class DocumentQuery extends Query_1.Query {
-    constructor(collectionName, variable, filters, schema) {
-        super(variable, filters, schema);
+    constructor(collectionName, variable, filters, limit, schema) {
+        super(variable, filters, limit, schema);
         this.collectionName = collectionName;
         this.__type = "documentQuery";
     }

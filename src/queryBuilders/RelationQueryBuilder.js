@@ -11,7 +11,7 @@ class RelationQueryBuilder extends QueryBuilder_1.QueryBuilder {
     }
     return(schemaCreator) {
         const schema = schemaCreator(this.collectionProxy, this.edgeCollectionProxy);
-        return new RelationQuery_1.RelationQuery(this.direction, this.edgeCollection._collectionName, this.variable, this.filters, schema);
+        return new RelationQuery_1.RelationQuery(this.direction, this.edgeCollection._collectionName, this.variable, this.filters, this.limitTo, schema);
     }
 }
 exports.RelationQueryBuilder = RelationQueryBuilder;
