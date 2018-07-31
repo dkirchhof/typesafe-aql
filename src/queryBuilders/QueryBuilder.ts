@@ -1,9 +1,6 @@
 import { Collection } from "../collections/Collection";
-import { Predicate } from "./Predicate";
-import { BooleanOperator } from "./BooleanOperator";
 import { Field } from "../collectionMetadata/Field";
-
-type Filter = Predicate<any> | BooleanOperator;
+import { Filter } from "./Filter";
 
 export abstract class QueryBuilder<CollectionType extends Collection> {
     protected readonly collectionProxy: CollectionType;

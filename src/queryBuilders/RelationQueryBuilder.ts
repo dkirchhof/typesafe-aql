@@ -1,8 +1,8 @@
 import { DocumentCollection } from "../collections/DocumentCollection";
-import { prettifyQuery } from "../utils/prettifyQuery";
 import { EdgeCollection } from "../collections/EdgeCollection";
 import { EdgeDirection } from "../collectionMetadata/Edge";
 import { QueryBuilder } from "./QueryBuilder";
+import { RelationQuery } from "./RelationQuery";
 
 export class RelationQueryBuilder<EdgeCollectionType extends EdgeCollection, ToCollectionType extends DocumentCollection> extends QueryBuilder<ToCollectionType> {
     private readonly edgeCollectionProxy: EdgeCollectionType;
@@ -20,35 +20,6 @@ export class RelationQueryBuilder<EdgeCollectionType extends EdgeCollection, ToC
     return <Schema>(schemaCreator: (collection: ToCollectionType, edge?: EdgeCollectionType) => Schema) {
         const schema = schemaCreator(this.collectionProxy, this.edgeCollectionProxy);
 
-        return new RelationQuery<Schema>(this.variable, this.direction, this.edgeCollection._collectionName, schema);
-    }
-}
-
-export class RelationQuery<Schema> {
-
-    constructor(
-        private readonly variable: string,
-        private readonly direction: EdgeDirection,
-        private readonly edgeName: string,
-        private readonly schema: Schema) {
-
-    }
-
-    toAQL(parentVariable: string, prettyPrint = false): string {
-
-        const fields = Object.entries(this.schema).map(([alias, field]) => {
-
-            if(field instanceof RelationQuery) {
-                return `${alias}: (\n${field.toAQL(this.variable)}\n)`;
-            }
-
-            return `${alias}: ${field}`;
-
-        }).join(",\n");
-
-        const edgeVariable = `${this.variable}_edge`;
-        const query = `FOR ${this.variable}, ${edgeVariable} IN 1 ${this.direction} ${parentVariable} ${this.edgeName}\nRETURN {\n${fields}\n}`;
-
-        return prettyPrint ? prettifyQuery(query) : query;
+        return new RelationQuery<Schema>(this.direction, this.edgeCollection._collectionName, this.variable, this.filters, schema);
     }
 }
