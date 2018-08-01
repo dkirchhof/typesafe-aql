@@ -64,6 +64,12 @@ async function queryTest() {
     
     const user2 = await userCollection.getOne(db, "???");
     console.log(user2);
+
+    const allUsers = await userCollection.getAll(db);
+    console.log(allUsers);
+
+    const many = await userCollection.getMany(db, ["62369", "70888__"]);
+    console.log(many);
 }
 
 async function umlTest() {
