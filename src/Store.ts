@@ -3,14 +3,14 @@ import { EdgeCollection } from "./collections/EdgeCollection";
 import { CollectionConstructorType, Collection } from "./collections/Collection";
 
 class ArangoStore {
-    private readonly documentCollections: Map<string, DocumentCollection> = new Map();
-    private readonly edgeCollections: Map<string, EdgeCollection> = new Map();
+    private readonly documentCollections: Map<string, DocumentCollection<any>> = new Map();
+    private readonly edgeCollections: Map<string, EdgeCollection<any>> = new Map();
 
-    public getDocumentCollection<CollectionType extends DocumentCollection>(constructor: CollectionConstructorType<CollectionType>) {
+    public getDocumentCollection<CollectionType extends DocumentCollection<any>>(constructor: CollectionConstructorType<CollectionType>) {
         return this.documentCollections.get(constructor.name) as CollectionType;
     }
 
-    public getEdgeCollection<CollectionType extends EdgeCollection>(constructor: CollectionConstructorType<CollectionType>) {
+    public getEdgeCollection<CollectionType extends EdgeCollection<any>>(constructor: CollectionConstructorType<CollectionType>) {
         return this.edgeCollections.get(constructor.name) as CollectionType;
     }
 

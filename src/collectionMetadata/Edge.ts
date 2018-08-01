@@ -6,7 +6,7 @@ import { arangoStore } from "../Store";
 
 export type EdgeDirection = "INBOUND" | "OUTBOUND" | "ANY"; 
 
-export class Edge<EdgeCollectionType extends EdgeCollection, ToCollectionType extends DocumentCollection> {
+export class Edge<EdgeCollectionType extends EdgeCollection<any>, ToCollectionType extends DocumentCollection<any>> {
     constructor(
         private readonly defaultDirection: EdgeDirection,
         private readonly getEdgeCollectionClass: () => CollectionConstructorType<EdgeCollectionType>,

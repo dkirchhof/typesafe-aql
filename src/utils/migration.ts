@@ -13,7 +13,7 @@ interface IRemoteCollection {
     globallyUniqueId: string;
 } 
 
-export async function getMissingCollections(db: Database, localCollections: Collection[]) {
+export async function getMissingCollections(db: Database, localCollections: Collection<any>[]) {
     const remoteCollections: IRemoteCollection[] = await db.listCollections();
     const remoteCollectioNames = remoteCollections.map(collection => collection.name);
 
@@ -22,7 +22,7 @@ export async function getMissingCollections(db: Database, localCollections: Coll
     );
 }
 
-export async function createMissingCollections(db: Database, localCollections: Collection[]) {
+export async function createMissingCollections(db: Database, localCollections: Collection<any>[]) {
     Promise.all(
         localCollections.map(collection => {
             if(collection instanceof DocumentCollection) {

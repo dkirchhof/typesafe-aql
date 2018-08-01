@@ -6,12 +6,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const DocumentCollection_1 = require("../collections/DocumentCollection");
-const Field_1 = require("../collectionMetadata/Field");
-const Edge_1 = require("../collectionMetadata/Edge");
+const DocumentCollection_1 = require("../../collections/DocumentCollection");
+const Field_1 = require("../../collectionMetadata/Field");
+const Edge_1 = require("../../collectionMetadata/Edge");
 const TeachesEdgeCollection_1 = require("./TeachesEdgeCollection");
 const CourseCollection_1 = require("./CourseCollection");
-const collectionDecorators_1 = require("../decorators/collectionDecorators");
+const collectionDecorators_1 = require("../../decorators/collectionDecorators");
 let UserCollection = class UserCollection extends DocumentCollection_1.DocumentCollection {
     constructor() {
         super(...arguments);

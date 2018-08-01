@@ -3,7 +3,7 @@ import { Field } from "../collectionMetadata/Field";
 import { Filter } from "./Filter";
 import { IQueryOptions } from "./QueryOptions";
 
-export abstract class QueryBuilder<CollectionType extends Collection> {
+export abstract class QueryBuilder<CollectionType extends Collection<any>> {
     protected readonly collectionProxy: CollectionType;
     protected readonly options: IQueryOptions = {
         variable: "",
@@ -30,7 +30,7 @@ export abstract class QueryBuilder<CollectionType extends Collection> {
         return this;
     }
 
-    protected createProxy<CollectionType extends Collection>(collection: CollectionType, variable: string): CollectionType {
+    protected createProxy<CollectionType extends Collection<any>>(collection: CollectionType, variable: string): CollectionType {
         return new Proxy(collection, {
             get: (target: any, key) => { 
                 if(target[key] instanceof Field) {

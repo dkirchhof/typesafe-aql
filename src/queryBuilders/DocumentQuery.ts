@@ -1,5 +1,5 @@
 import { Query } from "./Query";
-import { Database } from "../../node_modules/arangojs";
+import { Database } from "arangojs";
 import { MappedSchema } from "./Schema";
 import { IQueryOptions } from "./QueryOptions";
 

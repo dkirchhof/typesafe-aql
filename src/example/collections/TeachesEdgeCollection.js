@@ -6,8 +6,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const EdgeCollection_1 = require("../collections/EdgeCollection");
-const collectionDecorators_1 = require("../decorators/collectionDecorators");
+const EdgeCollection_1 = require("../../collections/EdgeCollection");
+const collectionDecorators_1 = require("../../decorators/collectionDecorators");
 let TeachesEdgeCollection = class TeachesEdgeCollection extends EdgeCollection_1.EdgeCollection {
 };
 TeachesEdgeCollection = __decorate([

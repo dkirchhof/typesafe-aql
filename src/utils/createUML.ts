@@ -4,7 +4,7 @@ import { Edge } from "../collectionMetadata/Edge";
 // digraph G {
 //     "User" -> "Course" [label=teaches, arrowhead=none]
 // }
-export function createUML(collections: Collection[]) {
+export function createUML(collections: Collection<any>[]) {
     const nodes: string[] = [];
     const edges: string[] = [];
     

@@ -2,7 +2,7 @@ import { Database } from "arangojs";
 import { inspect } from "util";
 import { createUML } from "../utils/createUML";
 import { arangoStore } from "../Store";
-import { UserCollection } from "./UserCollection";
+import { UserCollection } from "./collections/UserCollection";
 import { getMissingCollections, createMissingCollections } from "../utils/migration";
 import { Predicate } from "../queryBuilders/Predicate";
 import { or } from "../queryBuilders/BooleanOperator";
@@ -34,9 +34,9 @@ async function queryTest() {
             age: u.age,
 
             courses: u.teaches.createQuery("c")
-                .filter(c => new Predicate(c.name, "==", u.firstname))
+                .filter(c => new Predicate(c.title, "==", u.firstname))
                 .return(c => ({
-                    name: c.name,
+                    name: c.title,
                     teacher: c.taughtBy.createQuery("t2")
                         .return(t => ({ 
                             firstname: t.firstname 
@@ -45,6 +45,8 @@ async function queryTest() {
         }));
     
     console.log(query.toAQL(true));
+    // const result = await query.fetch(db); result[0].courses[0].teacher[0].firstname<Schema>
+    // console.log(inspect(result, false, null, true));
 
     const query2 = userCollection.createQuery("u1")
         .return(u1 => ({
@@ -57,8 +59,11 @@ async function queryTest() {
 
     console.log(query2.toAQL(true));
 
-    // const result = await query.fetch(db); result[0].courses[0].teacher[0].firstname<Schema>
-    // console.log(inspect(result, false, null, true));
+    const user = await userCollection.getOne(db, "62369");
+    console.log(user);
+    
+    const user2 = await userCollection.getOne(db, "???");
+    console.log(user2);
 }
 
 async function umlTest() {
