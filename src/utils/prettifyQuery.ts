@@ -46,7 +46,8 @@ export function prettifyQuery(query: string, spaces = 2) {
         indented
     );
 
-    // const coloredFieldNames = coloredKeywords.replace(/\w+:/g, chalk.green("$&"));
-
     return coloredKeywords;
+    
+    // const coloredFieldNames = coloredKeywords.replace(/\w+(?=:)/g, chalk.gray("$&"));
+    // return coloredFieldNames;
 }
