@@ -14,17 +14,26 @@ const KEYWORDS = [
 
 export function prettifyQuery(query: string, spaces = 2) {
     let indentation = 0;
-    
+
+    // dont start with "FILTER" and end with "{", "{,", "(" or "(,"
+    const startIndent = (line: string) => /^(?!FILTER).*[{\(]$/.test(line);
+
+    // dont start with "FILTER" and end with "}", "},", ")" or "),"
+    const endIndent = (line: string) => /^(?!FILTER).*[}\)],?$/.test(line);
+
+    // create an indented string
+    const indent = (line: string) => `${" ".repeat(indentation * spaces)}${line}`;
+
     const indented = query
         .split("\n")
         .map(line => {
-            if(!line.startsWith("FILTER") && (line.endsWith("}") || line.endsWith(")"))) {
+            if(endIndent(line)) {
                 indentation--;
             }
 
-            const indentedLine = `${" ".repeat(indentation * spaces)}${line}`;
+            const indentedLine = indent(line);
             
-            if(!line.startsWith("FILTER") && (line.endsWith("{") || line.endsWith("("))) {
+            if(startIndent(line)) {
                 indentation++;
             }
 
