@@ -1,0 +1,92 @@
+courses {
+    id
+    title
+    location {
+        name
+    }
+    teacher {
+        firstname
+    }
+}
+
+=> coursecollection { 
+    fields: [
+        id, 
+        title, 
+        location {
+            fields: [
+                name
+            ]
+        }, teacher {
+            fields: [firstname]
+        }
+    ]
+}
+
+FOR c IN courses
+RETURN { 
+    id: c._id,
+    title: c.title, 
+    location: { 
+        name: c.location.name 
+    },
+    teacher: FIRST(
+        FOR t IN 1 INBOUND c teaches 
+        RETURN {
+            firstname: t.firstname
+        }
+    )
+}
+
+courses(category: $category, maxUser: $maxUser, minUser: $minUser, title: $title) {
+    id
+    category
+    description
+    language
+    slug
+    title
+    type
+    ratingInfo {
+        amountRatings
+        avgRatings
+    }
+    teacher {
+        id
+        firstname
+        slug
+        location {
+            latitude
+            longitude
+            name
+        }
+        image {
+            id
+            filenames {
+                filenameImage
+                filenameImageRetina
+                filenameThumbnail
+                filenameThumbnailRetina
+                filenameVideo
+            }
+            placeholderImage
+            placeholderThumbnail
+        }
+    }
+    sets {
+        id
+        convertedPricePerHour(currency: $currency)
+        fullConvertedPrice(currency: $currency)
+        minDate
+        maxDate
+        minUsers
+        maxUsers
+        numberOfBookings
+        type
+        sessions {
+            id
+            start
+            end
+        }
+    }
+}
+

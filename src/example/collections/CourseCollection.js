@@ -16,6 +16,7 @@ let CourseCollection = class CourseCollection extends DocumentCollection_1.Docum
     constructor() {
         super(...arguments);
         this.title = new Field_1.Field();
+        this.location = new Field_1.Field();
         this.taughtBy = new Edge_1.Edge("INBOUND", () => TeachesEdgeCollection_1.TeachesEdgeCollection, () => UserCollection_1.UserCollection);
     }
 };

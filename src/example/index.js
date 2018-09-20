@@ -7,6 +7,7 @@ const UserCollection_1 = require("./collections/UserCollection");
 const migration_1 = require("../utils/migration");
 const Predicate_1 = require("../queryBuilders/Predicate");
 const BooleanOperator_1 = require("../queryBuilders/BooleanOperator");
+const CourseCollection_1 = require("./collections/CourseCollection");
 const dbServer = new arangojs_1.Database();
 const db = dbServer.useDatabase("test");
 runExample();
@@ -28,7 +29,7 @@ async function queryTest() {
         courses: u.teaches.createQuery("c")
             .filter(c => new Predicate_1.Predicate(c.title, "==", u.firstname))
             .return(c => ({
-            name: c.title,
+            title: c.title,
             teacher: c.taughtBy.createQuery("t2")
                 .return(t => ({
                 firstname: t.firstname
@@ -55,6 +56,46 @@ async function queryTest() {
     console.log(allUsers);
     const many = await userCollection.getMany(db, ["62369", "70888__"]);
     console.log(many);
+    // graphql
+    // courses {
+    //     id
+    //     title
+    //     location {
+    //         name
+    //     }
+    //     teacher {
+    //         firstname
+    //     }
+    // }
+    // aql
+    // FOR c IN courses
+    // RETURN { 
+    //     id: c._id,
+    //     title: c.title, 
+    //     location: { 
+    //         name: c.location.name 
+    //     },
+    //     teacher: FIRST(
+    //         FOR t IN 1 INBOUND c teaches 
+    //         RETURN {
+    //             firstname: t.firstname
+    //         }
+    //     )
+    // }
+    const courseCollection = Store_1.arangoStore.getDocumentCollection(CourseCollection_1.CourseCollection);
+    const query3 = courseCollection.createQuery("c")
+        // .return(c => ({
+        //     id: c._key,
+        //     title: c.title,
+        //     location: c.location,
+        //     teacher: c.taughtBy.createQuery("t")
+        //         .return(t => ({
+        //             firstname: t.firstname
+        //         }))
+        // }));
+        .returnAll();
+    console.log(query3.toAQL(true));
+    // console.log((await query3.fetch(db))[0]);
 }
 async function umlTest() {
     const uml = createUML_1.createUML(Store_1.arangoStore.allCollections);

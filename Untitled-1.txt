@@ -1,0 +1,13 @@
+get courses
+=> c1, c2, c3
+
+get users of courses (c1, c2, c3)
+=>  u1, u2, u3
+
+for t in teaches
+filter t._to == [c1, c2, c3]
+return document(t._from)
+
+for t in teaches
+filter t._to == "courses/75586"
+return document(t._from)

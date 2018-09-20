@@ -1,11 +1,11 @@
 import { Database } from "arangojs";
-import { inspect } from "util";
 import { createUML } from "../utils/createUML";
 import { arangoStore } from "../Store";
 import { UserCollection } from "./collections/UserCollection";
 import { getMissingCollections, createMissingCollections } from "../utils/migration";
 import { Predicate } from "../queryBuilders/Predicate";
 import { or } from "../queryBuilders/BooleanOperator";
+import { CourseCollection } from "./collections/CourseCollection";
 
 const dbServer = new Database();
 const db = dbServer.useDatabase("test");
@@ -36,7 +36,7 @@ async function queryTest() {
             courses: u.teaches.createQuery("c")
                 .filter(c => new Predicate(c.title, "==", u.firstname))
                 .return(c => ({
-                    name: c.title,
+                    title: c.title,
                     teacher: c.taughtBy.createQuery("t2")
                         .return(t => ({ 
                             firstname: t.firstname 
@@ -70,6 +70,40 @@ async function queryTest() {
 
     const many = await userCollection.getMany(db, ["62369", "70888__"]);
     console.log(many);
+
+    // graphql
+    // courses {
+    //     id
+    //     title
+    //     location {
+    //         name
+    //     }
+    //     teacher {
+    //         firstname
+    //     }
+    // }
+    
+    // aql
+    // FOR c IN courses
+    // RETURN { 
+    //     id: c._id,
+    //     title: c.title, 
+    //     location: { 
+    //         name: c.location.name 
+    //     },
+    //     teacher: FIRST(
+    //         FOR t IN 1 INBOUND c teaches 
+    //         RETURN {
+    //             firstname: t.firstname
+    //         }
+    //     )
+    // }
+
+    const courseCollection = arangoStore.getDocumentCollection(CourseCollection);
+    const query3 = courseCollection.createQuery("c").returnAll();
+    
+    console.log(query3.toAQL(true));
+    // console.log((await query3.fetch(db))[0]);
 }
 
 async function umlTest() {

@@ -9,5 +9,6 @@ import { ICourse } from "../models/ICourse";
 @DocumentCollectionDescriptor("courses")
 export class CourseCollection extends DocumentCollection<ICourse> {
     title = new Field<string>();
+    location = new Field<{ name: string }>();
     taughtBy = new Edge("INBOUND", () => TeachesEdgeCollection, () => UserCollection);
 }
