@@ -11,6 +11,6 @@ const collectionDecorators_1 = require("../../decorators/collectionDecorators");
 let TeachesEdgeCollection = class TeachesEdgeCollection extends EdgeCollection_1.EdgeCollection {
 };
 TeachesEdgeCollection = __decorate([
-    collectionDecorators_1.EdgeCollectionDescriptor("teaches")
+    collectionDecorators_1.CollectionDescriptor("teaches")
 ], TeachesEdgeCollection);
 exports.TeachesEdgeCollection = TeachesEdgeCollection;

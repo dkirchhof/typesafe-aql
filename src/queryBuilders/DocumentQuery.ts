@@ -1,6 +1,5 @@
 import { Query } from "./Query";
 import { Database } from "arangojs";
-import { MappedSchema } from "./Schema";
 import { IQueryOptions } from "./QueryOptions";
 
 export class DocumentQuery<Schema> extends Query {
@@ -16,7 +15,7 @@ export class DocumentQuery<Schema> extends Query {
         return this.queryToAQL(loop, prettyPrint);
     }
 
-    async fetch(db: Database): Promise<MappedSchema<Schema>[]> {
+    async fetch(db: Database): Promise<Schema[]> {
         const query = this.toAQL();
         const result = await db.query(query);
 

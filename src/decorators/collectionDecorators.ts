@@ -1,14 +1,29 @@
 import { arangoStore } from "../Store";
 import { CollectionConstructorType } from "../collections/Collection";
 
-export function DocumentCollectionDescriptor(collectionName: string) {
+export function CollectionDescriptor(collectionName: string) {
     return function(target: CollectionConstructorType<any>) {
-        arangoStore.registerDocumentCollection(target, collectionName);
+        const description = arangoStore.getOrRegisterCollectionDescription(target);
+
+        description.collectionName = collectionName;
+
+        if(target.name !== "Collection") {
+            addParentFields(description, target);
+        }
     }
 }
 
-export function EdgeCollectionDescriptor(collectionName: string) {
-    return function(target: CollectionConstructorType<any>) {
-        arangoStore.registerEdgeCollection(target, collectionName);
+function addParentFields(description: any, target: any) {
+    const parent = Object.getPrototypeOf(target);
+
+    if(parent) {
+        const parentDescription = arangoStore.getCollectionDescription(parent);
+        if(parentDescription) {
+            description.fields.push(...parentDescription.fields);
+        }
     }
-}
+
+    if(parent.name !== "Collection") {
+        addParentFields(description, parent);
+    }
+} 

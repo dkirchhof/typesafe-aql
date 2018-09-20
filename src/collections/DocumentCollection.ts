@@ -4,6 +4,7 @@ import { DocumentQueryBuilder } from "../queryBuilders/DocumentQueryBuilder";
 import { IDocumentModel } from "../models/IDocumentModel";
 
 export class DocumentCollection<ModelType extends IDocumentModel> extends Collection<ModelType> {
+    
     createQuery(variable: string) {
         return new DocumentQueryBuilder<this, ModelType>(variable, this);
     }   

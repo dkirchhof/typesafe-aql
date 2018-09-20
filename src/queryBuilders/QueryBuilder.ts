@@ -1,7 +1,7 @@
 import { Collection } from "../collections/Collection";
-import { Field } from "../collectionMetadata/Field";
 import { Filter } from "./Filter";
 import { IQueryOptions } from "./QueryOptions";
+import { arangoStore } from "../Store";
 
 export abstract class QueryBuilder<CollectionType extends Collection<any>> {
     protected readonly collectionProxy: CollectionType;
@@ -31,9 +31,11 @@ export abstract class QueryBuilder<CollectionType extends Collection<any>> {
     }
 
     protected createProxy<CollectionType extends Collection<any>>(collection: CollectionType, variable: string): CollectionType {
+        const collectionDescription = arangoStore.getCollectionDescription(collection.constructor as any)!;
+        
         return new Proxy(collection, {
-            get: (target: any, key) => { 
-                if(target[key] instanceof Field) {
+            get: (target: any, key) => {
+                if(collectionDescription.fields.includes(key.toString())) {
                     return `${variable}.${key.toString()}`;
                 }
                 return target[key]; 

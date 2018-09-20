@@ -1,11 +1,20 @@
-import { Field } from "../collectionMetadata/Field";
+import { arangoStore } from "../Store";
+import { FieldDescriptor } from "../decorators/fieldDecorators";
 
 export type CollectionConstructorType<Type extends Collection<any>> = { new(...args: any[]): Type };
 
 export abstract class Collection<ModelType> {
-    _id = new Field<string>();
-    _key = new Field<string>();
-    _rev = new Field<string>();
 
-    constructor(public readonly _collectionName: string) { }
+    @FieldDescriptor()
+    _id:  string;
+
+    @FieldDescriptor()
+    _key: string;
+
+    @FieldDescriptor()
+    _rev: string;
+
+    public get _collectionName() {
+        return arangoStore.getCollectionDescription(this.constructor as any)!.collectionName;
+    }
 }

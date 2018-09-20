@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Field_1 = require("../collectionMetadata/Field");
+const Store_1 = require("../Store");
 class QueryBuilder {
     constructor(variable, collection) {
         this.collection = collection;
@@ -23,9 +23,10 @@ class QueryBuilder {
         return this;
     }
     createProxy(collection, variable) {
+        const collectionDescription = Store_1.arangoStore.getCollectionDescription(collection.constructor);
         return new Proxy(collection, {
             get: (target, key) => {
-                if (target[key] instanceof Field_1.Field) {
+                if (collectionDescription.fields.includes(key.toString())) {
                     return `${variable}.${key.toString()}`;
                 }
                 return target[key];

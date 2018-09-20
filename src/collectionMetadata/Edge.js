@@ -9,10 +9,10 @@ class Edge {
         this.getToCollectionClass = getToCollectionClass;
     }
     get edgeCollection() {
-        return Store_1.arangoStore.getEdgeCollection(this.getEdgeCollectionClass());
+        return Store_1.arangoStore.getCollection(this.getEdgeCollectionClass());
     }
     get toCollection() {
-        return Store_1.arangoStore.getDocumentCollection(this.getToCollectionClass());
+        return Store_1.arangoStore.getCollection(this.getToCollectionClass());
     }
     createQuery(variable, direction) {
         return new RelationQueryBuilder_1.RelationQueryBuilder(variable, this.toCollection, this.edgeCollection, direction || this.defaultDirection);

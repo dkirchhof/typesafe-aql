@@ -16,11 +16,11 @@ export class Edge<EdgeCollectionType extends EdgeCollection<any>, ToCollectionTy
     }
 
     public get edgeCollection() {
-        return arangoStore.getEdgeCollection(this.getEdgeCollectionClass());
+        return arangoStore.getCollection(this.getEdgeCollectionClass());
     }
 
     public get toCollection() {
-        return arangoStore.getDocumentCollection(this.getToCollectionClass());
+        return arangoStore.getCollection(this.getToCollectionClass());
     }
 
     createQuery(variable: string, direction?: EdgeDirection) {

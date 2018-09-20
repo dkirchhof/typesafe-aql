@@ -7,21 +7,27 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const DocumentCollection_1 = require("../../collections/DocumentCollection");
-const Field_1 = require("../../collectionMetadata/Field");
 const Edge_1 = require("../../collectionMetadata/Edge");
 const TeachesEdgeCollection_1 = require("./TeachesEdgeCollection");
 const CourseCollection_1 = require("./CourseCollection");
 const collectionDecorators_1 = require("../../decorators/collectionDecorators");
+const fieldDecorators_1 = require("../../decorators/fieldDecorators");
 let UserCollection = class UserCollection extends DocumentCollection_1.DocumentCollection {
     constructor() {
         super(...arguments);
-        this.firstname = new Field_1.Field();
-        this.lastname = new Field_1.Field();
-        this.age = new Field_1.Field();
         this.teaches = new Edge_1.Edge("OUTBOUND", () => TeachesEdgeCollection_1.TeachesEdgeCollection, () => CourseCollection_1.CourseCollection);
     }
 };
+__decorate([
+    fieldDecorators_1.FieldDescriptor()
+], UserCollection.prototype, "firstname", void 0);
+__decorate([
+    fieldDecorators_1.FieldDescriptor()
+], UserCollection.prototype, "lastname", void 0);
+__decorate([
+    fieldDecorators_1.FieldDescriptor()
+], UserCollection.prototype, "age", void 0);
 UserCollection = __decorate([
-    collectionDecorators_1.DocumentCollectionDescriptor("users")
+    collectionDecorators_1.CollectionDescriptor("users")
 ], UserCollection);
 exports.UserCollection = UserCollection;

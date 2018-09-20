@@ -2,26 +2,28 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 class ArangoStore {
     constructor() {
-        this.documentCollections = new Map();
-        this.edgeCollections = new Map();
+        this.collectionDescriptions = new Map();
     }
-    getDocumentCollection(constructor) {
-        return this.documentCollections.get(constructor.name);
+    getCollection(constructor) {
+        return this.collectionDescriptions.get(constructor.name).collection;
     }
-    getEdgeCollection(constructor) {
-        return this.edgeCollections.get(constructor.name);
+    getCollectionDescription(constructor) {
+        return this.collectionDescriptions.get(constructor.name);
     }
-    registerDocumentCollection(constructor, collectionName) {
-        this.documentCollections.set(constructor.name, new constructor(collectionName));
-    }
-    registerEdgeCollection(constructor, collectionName) {
-        this.edgeCollections.set(constructor.name, new constructor(collectionName));
+    getOrRegisterCollectionDescription(constructor) {
+        let description = this.getCollectionDescription(constructor);
+        if (!description) {
+            description = {
+                collection: new constructor(),
+                collectionName: "",
+                fields: [],
+            };
+            this.collectionDescriptions.set(constructor.name, description);
+        }
+        return description;
     }
     get allCollections() {
-        return [
-            ...this.documentCollections.values(),
-            ...this.edgeCollections.values(),
-        ];
+        return [...this.collectionDescriptions.values()].map(d => d.collection);
     }
 }
 exports.arangoStore = new ArangoStore();

@@ -1,32 +1,40 @@
-import { DocumentCollection } from "./collections/DocumentCollection";
-import { EdgeCollection } from "./collections/EdgeCollection";
 import { CollectionConstructorType, Collection } from "./collections/Collection";
 
+interface ICollectionDescription {
+    collection: Collection<any>;
+    collectionName: string;
+    fields: string[];
+}
+
 class ArangoStore {
-    private readonly documentCollections: Map<string, DocumentCollection<any>> = new Map();
-    private readonly edgeCollections: Map<string, EdgeCollection<any>> = new Map();
+    private readonly collectionDescriptions: Map<string, ICollectionDescription> = new Map();
 
-    public getDocumentCollection<CollectionType extends DocumentCollection<any>>(constructor: CollectionConstructorType<CollectionType>) {
-        return this.documentCollections.get(constructor.name) as CollectionType;
+    public getCollection<CollectionType extends Collection<any>>(constructor: CollectionConstructorType<CollectionType>) {
+        return this.collectionDescriptions.get(constructor.name)!.collection as CollectionType;
     }
 
-    public getEdgeCollection<CollectionType extends EdgeCollection<any>>(constructor: CollectionConstructorType<CollectionType>) {
-        return this.edgeCollections.get(constructor.name) as CollectionType;
+    public getCollectionDescription(constructor: CollectionConstructorType<any>) {
+        return this.collectionDescriptions.get(constructor.name);
     }
 
-    public registerDocumentCollection(constructor: CollectionConstructorType<any>, collectionName: string) {
-        this.documentCollections.set(constructor.name, new constructor(collectionName));
-    }
+    public getOrRegisterCollectionDescription(constructor: CollectionConstructorType<any>) {
+        let description = this.getCollectionDescription(constructor);
 
-    public registerEdgeCollection(constructor: CollectionConstructorType<any>, collectionName: string) {
-        this.edgeCollections.set(constructor.name, new constructor(collectionName));
+        if(!description) {
+            description = { 
+                collection: new constructor(),
+                collectionName: "",
+                fields: [],
+            };
+
+            this.collectionDescriptions.set(constructor.name, description);
+        }
+
+        return description;
     }
 
     public get allCollections() {
-        return [
-            ...this.documentCollections.values(),
-            ...this.edgeCollections.values(),
-        ];
+        return [...this.collectionDescriptions.values()].map(d => d.collection);
     }
 }
 

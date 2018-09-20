@@ -1,15 +1,25 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const Store_1 = require("../Store");
-function DocumentCollectionDescriptor(collectionName) {
+function CollectionDescriptor(collectionName) {
     return function (target) {
-        Store_1.arangoStore.registerDocumentCollection(target, collectionName);
+        const description = Store_1.arangoStore.getOrRegisterCollectionDescription(target);
+        description.collectionName = collectionName;
+        if (target.name !== "Collection") {
+            addParentFields(description, target);
+        }
     };
 }
-exports.DocumentCollectionDescriptor = DocumentCollectionDescriptor;
-function EdgeCollectionDescriptor(collectionName) {
-    return function (target) {
-        Store_1.arangoStore.registerEdgeCollection(target, collectionName);
-    };
+exports.CollectionDescriptor = CollectionDescriptor;
+function addParentFields(description, target) {
+    const parent = Object.getPrototypeOf(target);
+    if (parent) {
+        const parentDescription = Store_1.arangoStore.getCollectionDescription(parent);
+        if (parentDescription) {
+            description.fields.push(...parentDescription.fields);
+        }
+    }
+    if (parent.name !== "Collection") {
+        addParentFields(description, parent);
+    }
 }
-exports.EdgeCollectionDescriptor = EdgeCollectionDescriptor;
