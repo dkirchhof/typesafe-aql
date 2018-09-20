@@ -1,7 +1,6 @@
-import { Collection } from "../collections/Collection";
-import { Field } from "../collectionMetadata/Field";
-import { Filter } from "./Filter";
-import { IQueryOptions } from "./QueryOptions";
+import { Collection } from "../../collections";
+import { Field } from "../../collectionMetadata";
+import { Filter, IQueryOptions } from "../";
 
 export abstract class QueryBuilder<CollectionType extends Collection<any>> {
     protected readonly collectionProxy: CollectionType;

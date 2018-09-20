@@ -1,5 +1,5 @@
-import { Field } from "../collectionMetadata/Field";
-import { RelationQuery } from "./RelationQuery";
+import { Field } from "../collectionMetadata";
+import { RelationQuery } from ".";
 
 export type MappedSchema<T> = { 
     [s in keyof T]: MappedType<T[s]>

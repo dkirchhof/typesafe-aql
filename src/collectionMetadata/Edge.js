@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const RelationQueryBuilder_1 = require("../queryBuilders/RelationQueryBuilder");
+const builders_1 = require("../queries/builders");
 const Store_1 = require("../Store");
 class Edge {
     constructor(defaultDirection, getEdgeCollectionClass, getToCollectionClass) {
@@ -15,7 +15,7 @@ class Edge {
         return Store_1.arangoStore.getCollection(this.getToCollectionClass());
     }
     createQuery(variable, direction) {
-        return new RelationQueryBuilder_1.RelationQueryBuilder(variable, this.toCollection, this.edgeCollection, direction || this.defaultDirection);
+        return new builders_1.RelationQueryBuilder(variable, this.toCollection, this.edgeCollection, direction || this.defaultDirection);
     }
 }
 exports.Edge = Edge;

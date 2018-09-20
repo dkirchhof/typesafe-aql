@@ -1,6 +1,6 @@
-import { Collection, CollectionConstructorType } from "../collections/Collection";
-import { EdgeCollection } from "../collections/EdgeCollection";
-import { RelationQueryBuilder } from "../queryBuilders/RelationQueryBuilder";
+import { Collection, CollectionConstructorType, EdgeCollection } from "../collections";
+import { RelationQueryBuilder } from "../queries/builders";
+
 import { arangoStore } from "../Store";
 
 export type EdgeDirection = "INBOUND" | "OUTBOUND" | "ANY"; 

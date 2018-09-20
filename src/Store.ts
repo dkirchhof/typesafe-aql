@@ -1,4 +1,4 @@
-import { Collection, CollectionConstructorType } from "./collections/Collection";
+import { Collection, CollectionConstructorType } from "./collections";
 
 class ArangoStore {
     private readonly collections: Map<string, Collection<any>> = new Map();

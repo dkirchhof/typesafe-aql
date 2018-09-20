@@ -1,6 +1,6 @@
-import { Collection } from "../collections/Collection";
-import { QueryBuilder } from "./QueryBuilder";
-import { DocumentQuery } from "./DocumentQuery";
+import { Collection } from "../../collections";
+import { DocumentQuery } from "../";
+import { QueryBuilder } from ".";
 
 export class DocumentQueryBuilder<CollectionType extends Collection<ModelType>, ModelType> extends QueryBuilder<CollectionType> {
 

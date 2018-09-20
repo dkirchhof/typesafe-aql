@@ -6,22 +6,21 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const Collection_1 = require("../../collections/Collection");
-const Field_1 = require("../../collectionMetadata/Field");
-const Edge_1 = require("../../collectionMetadata/Edge");
+const collections_1 = require("../../collections");
+const collectionMetadata_1 = require("../../collectionMetadata");
 const TeachesEdgeCollection_1 = require("./TeachesEdgeCollection");
 const CourseCollection_1 = require("./CourseCollection");
-const collectionDecorators_1 = require("../../decorators/collectionDecorators");
-let UserCollection = class UserCollection extends Collection_1.Collection {
+const decorators_1 = require("../../decorators");
+let UserCollection = class UserCollection extends collections_1.Collection {
     constructor() {
         super(...arguments);
-        this.firstname = new Field_1.Field();
-        this.lastname = new Field_1.Field();
-        this.age = new Field_1.Field();
-        this.teaches = new Edge_1.Edge("OUTBOUND", () => TeachesEdgeCollection_1.TeachesEdgeCollection, () => CourseCollection_1.CourseCollection);
+        this.firstname = new collectionMetadata_1.Field();
+        this.lastname = new collectionMetadata_1.Field();
+        this.age = new collectionMetadata_1.Field();
+        this.teaches = new collectionMetadata_1.Edge("OUTBOUND", () => TeachesEdgeCollection_1.TeachesEdgeCollection, () => CourseCollection_1.CourseCollection);
     }
 };
 UserCollection = __decorate([
-    collectionDecorators_1.CollectionDescriptor("users")
+    decorators_1.CollectionDescriptor("users")
 ], UserCollection);
 exports.UserCollection = UserCollection;

@@ -1,8 +1,7 @@
-import { Collection } from "../collections/Collection";
-import { EdgeCollection } from "../collections/EdgeCollection";
-import { EdgeDirection } from "../collectionMetadata/Edge";
-import { QueryBuilder } from "./QueryBuilder";
-import { RelationQuery } from "./RelationQuery";
+import { Collection, EdgeCollection } from "../../collections";
+import { EdgeDirection } from "../../collectionMetadata";
+import { RelationQuery } from "../";
+import { QueryBuilder } from ".";
 
 export class RelationQueryBuilder<EdgeCollectionType extends EdgeCollection<any>, ToCollectionType extends Collection<any>> extends QueryBuilder<ToCollectionType> {
     private readonly edgeCollectionProxy: EdgeCollectionType;

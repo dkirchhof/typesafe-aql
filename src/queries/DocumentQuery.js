@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Query_1 = require("./Query");
-class DocumentQuery extends Query_1.Query {
+const _1 = require(".");
+class DocumentQuery extends _1.Query {
     constructor(collectionName, options) {
         super(options);
         this.collectionName = collectionName;

@@ -1,4 +1,4 @@
-import { Field } from "../collectionMetadata/Field";
+import { Field } from "../collectionMetadata";
 
 export class Predicate<Type> {
     constructor(

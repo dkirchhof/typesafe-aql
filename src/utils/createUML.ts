@@ -1,5 +1,5 @@
-import { Collection } from "../collections/Collection";
-import { Edge } from "../collectionMetadata/Edge";
+import { Collection } from "../collections";
+import { Edge } from "../collectionMetadata";
 
 // digraph G {
 //     "User" -> "Course" [label=teaches, arrowhead=none]

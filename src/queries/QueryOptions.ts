@@ -1,4 +1,4 @@
-import { Filter } from "./Filter";
+import { Filter } from ".";
 
 export interface IQueryOptions{
     variable: string;

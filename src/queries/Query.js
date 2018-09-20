@@ -1,60 +1,50 @@
-import { prettifyQuery } from "../utils/prettifyQuery";
-import { IQueryOptions } from "./QueryOptions";
-
-export abstract class Query {
-    
-    constructor(protected readonly options: IQueryOptions) { }
-
-    private filtersToAQL() {
-        if(!this.options.filters.length) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const prettifyQuery_1 = require("../utils/prettifyQuery");
+const _1 = require(".");
+class Query {
+    constructor(options) {
+        this.options = options;
+    }
+    filtersToAQL() {
+        if (!this.options.filters.length) {
             return null;
         }
-
         return this.options.filters
             .map(filter => `FILTER ${filter}`)
             .join("\n");
     }
-
-    private limitToAQL() {
-        if(!this.options.limit) {
+    limitToAQL() {
+        if (!this.options.limit) {
             return null;
         }
-
         return `LIMIT ${this.options.limit}`;
     }
-
-    private schemaToAQL() {
-        if(!this.options.schema) {
+    schemaToAQL() {
+        if (!this.options.schema) {
             return `RETURN ${this.options.variable}`;
         }
-
         const fields = Object.entries(this.options.schema).map(([alias, field]) => {
-            
-            if(field.__type === "documentQuery") {
+            if (field instanceof _1.DocumentQuery) {
                 return `${alias}: (\n${field.toAQL()}\n)`;
             }
-
-            if(field.__type === "relationQuery") {
+            if (field instanceof _1.RelationQuery) {
                 return `${alias}: (\n${field.toAQL(this.options.variable)}\n)`;
             }
-
             return `${alias}: ${field}`;
-
         }).join(",\n");
-
         return `RETURN {\n${fields}\n}`;
     }
-
-    protected queryToAQL(loop: string, prettyPrint = false) {
+    queryToAQL(loop, prettyPrint = false) {
         const query = [
             loop,
             this.filtersToAQL(),
             this.limitToAQL(),
             this.schemaToAQL(),
         ]
-        .filter(Boolean)
-        .join("\n");
-
-        return prettyPrint ? prettifyQuery(query) : query;
+            .filter(Boolean)
+            .join("\n");
+        return prettyPrint ? prettifyQuery_1.prettifyQuery(query) : query;
     }
 }
+exports.Query = Query;

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const EdgeCollection_1 = require("../collections/EdgeCollection");
+const collections_1 = require("../collections");
 async function getMissingCollections(db, localCollections) {
     const remoteCollections = await db.listCollections();
     const remoteCollectioNames = remoteCollections.map(collection => collection.name);
@@ -9,7 +9,7 @@ async function getMissingCollections(db, localCollections) {
 exports.getMissingCollections = getMissingCollections;
 async function createMissingCollections(db, localCollections) {
     Promise.all(localCollections.map(collection => {
-        if (collection instanceof EdgeCollection_1.EdgeCollection) {
+        if (collection instanceof collections_1.EdgeCollection) {
             return db.edgeCollection(collection._collectionName).create();
         }
         return db.collection(collection._collectionName).create();

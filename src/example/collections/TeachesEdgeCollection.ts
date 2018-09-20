@@ -1,5 +1,5 @@
-import { EdgeCollection } from "../../collections/EdgeCollection";
-import { CollectionDescriptor } from "../../decorators/collectionDecorators";
+import { EdgeCollection } from "../../collections";
+import { CollectionDescriptor } from "../../decorators";
 import { ITeaches } from "../models/ITeaches";
 
 @CollectionDescriptor("teaches")

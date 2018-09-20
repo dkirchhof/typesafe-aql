@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Query_1 = require("./Query");
-class RelationQuery extends Query_1.Query {
+const _1 = require(".");
+class RelationQuery extends _1.Query {
     constructor(direction, edgeName, options) {
         super(options);
         this.direction = direction;

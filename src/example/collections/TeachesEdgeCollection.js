@@ -6,11 +6,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const EdgeCollection_1 = require("../../collections/EdgeCollection");
-const collectionDecorators_1 = require("../../decorators/collectionDecorators");
-let TeachesEdgeCollection = class TeachesEdgeCollection extends EdgeCollection_1.EdgeCollection {
+const collections_1 = require("../../collections");
+const decorators_1 = require("../../decorators");
+let TeachesEdgeCollection = class TeachesEdgeCollection extends collections_1.EdgeCollection {
 };
 TeachesEdgeCollection = __decorate([
-    collectionDecorators_1.CollectionDescriptor("teaches")
+    decorators_1.CollectionDescriptor("teaches")
 ], TeachesEdgeCollection);
 exports.TeachesEdgeCollection = TeachesEdgeCollection;

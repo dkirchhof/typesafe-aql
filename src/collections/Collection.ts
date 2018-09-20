@@ -1,6 +1,6 @@
 import { Database } from "arangojs";
-import { Field } from "../collectionMetadata/Field";
-import { DocumentQueryBuilder } from "../queryBuilders/DocumentQueryBuilder";
+import { Field } from "../collectionMetadata";
+import { DocumentQueryBuilder } from "../queries/builders";
 
 export type CollectionConstructorType<Type extends Collection<any>> = { new(...args: any[]): Type };
 

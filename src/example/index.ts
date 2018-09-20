@@ -3,8 +3,8 @@ import { createUML } from "../utils/createUML";
 import { arangoStore } from "../Store";
 import { UserCollection } from "./collections/UserCollection";
 import { getMissingCollections, createMissingCollections } from "../utils/migration";
-import { Predicate } from "../queryBuilders/Predicate";
-import { or } from "../queryBuilders/BooleanOperator";
+import { Predicate } from "../queries/Predicate";
+import { or } from "../queries/BooleanOperator";
 import { CourseCollection } from "./collections/CourseCollection";
 import { TeachesEdgeCollection } from "./collections/TeachesEdgeCollection";
 

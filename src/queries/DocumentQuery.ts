@@ -1,7 +1,5 @@
-import { Query } from "./Query";
 import { Database } from "arangojs";
-import { MappedSchema } from "./Schema";
-import { IQueryOptions } from "./QueryOptions";
+import { Query, IQueryOptions, MappedSchema } from ".";
 
 export class DocumentQuery<Schema> extends Query {
     private __type = "documentQuery";

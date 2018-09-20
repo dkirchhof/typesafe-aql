@@ -1,16 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Field_1 = require("../collectionMetadata/Field");
-const DocumentQueryBuilder_1 = require("../queryBuilders/DocumentQueryBuilder");
+const collectionMetadata_1 = require("../collectionMetadata");
+const builders_1 = require("../queries/builders");
 class Collection {
     constructor(_collectionName) {
         this._collectionName = _collectionName;
-        this._id = new Field_1.Field();
-        this._key = new Field_1.Field();
-        this._rev = new Field_1.Field();
+        this._id = new collectionMetadata_1.Field();
+        this._key = new collectionMetadata_1.Field();
+        this._rev = new collectionMetadata_1.Field();
     }
     createQuery(variable) {
-        return new DocumentQueryBuilder_1.DocumentQueryBuilder(variable, this);
+        return new builders_1.DocumentQueryBuilder(variable, this);
     }
     async getOne(db, key) {
         try {

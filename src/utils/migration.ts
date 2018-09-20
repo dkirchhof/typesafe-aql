@@ -1,6 +1,5 @@
 import { Database } from "arangojs";
-import { Collection } from "../collections/Collection";
-import { EdgeCollection } from "../collections/EdgeCollection";
+import { Collection, EdgeCollection } from "../collections";
 
 interface IRemoteCollection {
     id: string;

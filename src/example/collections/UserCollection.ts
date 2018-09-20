@@ -1,9 +1,8 @@
-import { Collection } from "../../collections/Collection";
-import { Field } from "../../collectionMetadata/Field";
-import { Edge } from "../../collectionMetadata/Edge";
+import { Collection } from "../../collections";
+import { Edge, Field } from "../../collectionMetadata";
 import { TeachesEdgeCollection } from "./TeachesEdgeCollection";
 import { CourseCollection } from "./CourseCollection";
-import { CollectionDescriptor } from "../../decorators/collectionDecorators";
+import { CollectionDescriptor } from "../../decorators";
 import { IUser } from "../models/IUser";
 
 @CollectionDescriptor("users")

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Field_1 = require("../collectionMetadata/Field");
+const collectionMetadata_1 = require("../../collectionMetadata");
 class QueryBuilder {
     constructor(variable, collection) {
         this.collection = collection;
@@ -25,7 +25,7 @@ class QueryBuilder {
     createProxy(collection, variable) {
         return new Proxy(collection, {
             get: (target, key) => {
-                if (target[key] instanceof Field_1.Field) {
+                if (target[key] instanceof collectionMetadata_1.Field) {
                     return `${variable}.${key.toString()}`;
                 }
                 return target[key];

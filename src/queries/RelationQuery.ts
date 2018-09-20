@@ -1,6 +1,5 @@
-import { Query } from "./Query";
-import { EdgeDirection } from "../collectionMetadata/Edge";
-import { IQueryOptions } from "./QueryOptions";
+import { EdgeDirection } from "../collectionMetadata";
+import { Query, IQueryOptions } from ".";
 
 export class RelationQuery<Schema> extends Query {
     private __type = "relationQuery";
