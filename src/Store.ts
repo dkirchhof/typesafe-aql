@@ -1,32 +1,18 @@
-import { DocumentCollection } from "./collections/DocumentCollection";
-import { EdgeCollection } from "./collections/EdgeCollection";
-import { CollectionConstructorType, Collection } from "./collections/Collection";
+import { Collection, CollectionConstructorType } from "./collections/Collection";
 
 class ArangoStore {
-    private readonly documentCollections: Map<string, DocumentCollection<any>> = new Map();
-    private readonly edgeCollections: Map<string, EdgeCollection<any>> = new Map();
+    private readonly collections: Map<string, Collection<any>> = new Map();
 
-    public getDocumentCollection<CollectionType extends DocumentCollection<any>>(constructor: CollectionConstructorType<CollectionType>) {
-        return this.documentCollections.get(constructor.name) as CollectionType;
-    }
-
-    public getEdgeCollection<CollectionType extends EdgeCollection<any>>(constructor: CollectionConstructorType<CollectionType>) {
-        return this.edgeCollections.get(constructor.name) as CollectionType;
+    public getCollection<CollectionType extends Collection<any>>(constructor: CollectionConstructorType<CollectionType>) {
+        return this.collections.get(constructor.name) as CollectionType;
     }
 
     public registerDocumentCollection(constructor: CollectionConstructorType<any>, collectionName: string) {
-        this.documentCollections.set(constructor.name, new constructor(collectionName));
-    }
-
-    public registerEdgeCollection(constructor: CollectionConstructorType<any>, collectionName: string) {
-        this.edgeCollections.set(constructor.name, new constructor(collectionName));
+        this.collections.set(constructor.name, new constructor(collectionName));
     }
 
     public get allCollections() {
-        return [
-            ...this.documentCollections.values(),
-            ...this.edgeCollections.values(),
-        ];
+        return [...this.collections.values()];
     }
 }
 

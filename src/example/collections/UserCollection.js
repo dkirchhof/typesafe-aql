@@ -22,6 +22,6 @@ let UserCollection = class UserCollection extends DocumentCollection_1.DocumentC
     }
 };
 UserCollection = __decorate([
-    collectionDecorators_1.DocumentCollectionDescriptor("users")
+    collectionDecorators_1.CollectionDescriptor("users")
 ], UserCollection);
 exports.UserCollection = UserCollection;

@@ -21,6 +21,6 @@ let CourseCollection = class CourseCollection extends DocumentCollection_1.Docum
     }
 };
 CourseCollection = __decorate([
-    collectionDecorators_1.DocumentCollectionDescriptor("courses")
+    collectionDecorators_1.CollectionDescriptor("courses")
 ], CourseCollection);
 exports.CourseCollection = CourseCollection;

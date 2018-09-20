@@ -19,7 +19,7 @@ async function runExample() {
 }
 
 async function queryTest() {
-    const userCollection = arangoStore.getDocumentCollection(UserCollection);
+    const userCollection = arangoStore.getCollection(UserCollection);
 
     const query = userCollection.createQuery("u")
         .filter(u => new Predicate(u.age, ">=", 18))
@@ -99,7 +99,7 @@ async function queryTest() {
     //     )
     // }
 
-    const courseCollection = arangoStore.getDocumentCollection(CourseCollection);
+    const courseCollection = arangoStore.getCollection(CourseCollection);
     const query3 = courseCollection.createQuery("c").returnAll();
     
     console.log(query3.toAQL(true));

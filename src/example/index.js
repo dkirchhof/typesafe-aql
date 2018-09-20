@@ -17,7 +17,7 @@ async function runExample() {
     // await umlTest();
 }
 async function queryTest() {
-    const userCollection = Store_1.arangoStore.getDocumentCollection(UserCollection_1.UserCollection);
+    const userCollection = Store_1.arangoStore.getCollection(UserCollection_1.UserCollection);
     const query = userCollection.createQuery("u")
         .filter(u => new Predicate_1.Predicate(u.age, ">=", 18))
         .filter(u => BooleanOperator_1.or(new Predicate_1.Predicate(u.firstname, "==", u.lastname), new Predicate_1.Predicate(u.age, ">=", 100)))
@@ -82,18 +82,8 @@ async function queryTest() {
     //         }
     //     )
     // }
-    const courseCollection = Store_1.arangoStore.getDocumentCollection(CourseCollection_1.CourseCollection);
-    const query3 = courseCollection.createQuery("c")
-        // .return(c => ({
-        //     id: c._key,
-        //     title: c.title,
-        //     location: c.location,
-        //     teacher: c.taughtBy.createQuery("t")
-        //         .return(t => ({
-        //             firstname: t.firstname
-        //         }))
-        // }));
-        .returnAll();
+    const courseCollection = Store_1.arangoStore.getCollection(CourseCollection_1.CourseCollection);
+    const query3 = courseCollection.createQuery("c").returnAll();
     console.log(query3.toAQL(true));
     // console.log((await query3.fetch(db))[0]);
 }
