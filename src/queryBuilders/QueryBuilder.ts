@@ -9,7 +9,7 @@ export abstract class QueryBuilder<CollectionType extends Collection<any>> {
         variable: "",
         filters: [],
         limit: null,
-        schema: { },
+        schema: null,
     }
 
     constructor(variable: string, protected readonly collection: CollectionType) {        

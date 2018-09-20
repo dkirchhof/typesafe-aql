@@ -5,7 +5,7 @@ import { IDocumentModel } from "../models/IDocumentModel";
 
 export class DocumentCollection<ModelType extends IDocumentModel> extends Collection<ModelType> {
     createQuery(variable: string) {
-        return new DocumentQueryBuilder(variable, this);
+        return new DocumentQueryBuilder<this, ModelType>(variable, this);
     }   
 
     public async getOne(db: Database, key: string): Promise<ModelType | null> {

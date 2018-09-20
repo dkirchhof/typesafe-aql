@@ -20,6 +20,9 @@ class Query {
         return `LIMIT ${this.options.limit}`;
     }
     schemaToAQL() {
+        if (!this.options.schema) {
+            return `RETURN ${this.options.variable}`;
+        }
         const fields = Object.entries(this.options.schema).map(([alias, field]) => {
             if (field.__type === "documentQuery") {
                 return `${alias}: (\n${field.toAQL()}\n)`;

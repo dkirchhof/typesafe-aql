@@ -7,5 +7,8 @@ class DocumentQueryBuilder extends QueryBuilder_1.QueryBuilder {
         this.options.schema = schemaCreator(this.collectionProxy);
         return new DocumentQuery_1.DocumentQuery(this.collection._collectionName, this.options);
     }
+    returnAll() {
+        return new DocumentQuery_1.DocumentQuery(this.collection._collectionName, this.options);
+    }
 }
 exports.DocumentQueryBuilder = DocumentQueryBuilder;

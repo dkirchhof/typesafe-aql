@@ -4,5 +4,5 @@ export interface IQueryOptions{
     variable: string;
     filters: Filter[];
     limit: number | null;
-    schema: object;
+    schema: object | null;
 }

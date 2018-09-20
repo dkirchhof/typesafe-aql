@@ -8,7 +8,7 @@ class QueryBuilder {
             variable: "",
             filters: [],
             limit: null,
-            schema: {},
+            schema: null,
         };
         this.collectionProxy = this.createProxy(collection, variable);
         this.options.variable = variable;
