@@ -1,19 +1,16 @@
-import { CollectionConstructorType } from "../collections/Collection";
-import { DocumentCollection } from "../collections/DocumentCollection";
+import { Collection, CollectionConstructorType } from "../collections/Collection";
 import { EdgeCollection } from "../collections/EdgeCollection";
 import { RelationQueryBuilder } from "../queryBuilders/RelationQueryBuilder";
 import { arangoStore } from "../Store";
 
 export type EdgeDirection = "INBOUND" | "OUTBOUND" | "ANY"; 
 
-export class Edge<EdgeCollectionType extends EdgeCollection<any>, ToCollectionType extends DocumentCollection<any>> {
+export class Edge<EdgeCollectionType extends EdgeCollection<any>, ToCollectionType extends Collection<any>> {
     constructor(
         private readonly defaultDirection: EdgeDirection,
         private readonly getEdgeCollectionClass: () => CollectionConstructorType<EdgeCollectionType>,
         private readonly getToCollectionClass: () => CollectionConstructorType<ToCollectionType>,
-    ) {
-
-    }
+    ) { }
 
     public get edgeCollection() {
         return arangoStore.getCollection(this.getEdgeCollectionClass());

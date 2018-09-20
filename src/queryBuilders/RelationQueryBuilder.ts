@@ -1,10 +1,10 @@
-import { DocumentCollection } from "../collections/DocumentCollection";
+import { Collection } from "../collections/Collection";
 import { EdgeCollection } from "../collections/EdgeCollection";
 import { EdgeDirection } from "../collectionMetadata/Edge";
 import { QueryBuilder } from "./QueryBuilder";
 import { RelationQuery } from "./RelationQuery";
 
-export class RelationQueryBuilder<EdgeCollectionType extends EdgeCollection<any>, ToCollectionType extends DocumentCollection<any>> extends QueryBuilder<ToCollectionType> {
+export class RelationQueryBuilder<EdgeCollectionType extends EdgeCollection<any>, ToCollectionType extends Collection<any>> extends QueryBuilder<ToCollectionType> {
     private readonly edgeCollectionProxy: EdgeCollectionType;
 
     constructor(

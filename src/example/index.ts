@@ -6,6 +6,7 @@ import { getMissingCollections, createMissingCollections } from "../utils/migrat
 import { Predicate } from "../queryBuilders/Predicate";
 import { or } from "../queryBuilders/BooleanOperator";
 import { CourseCollection } from "./collections/CourseCollection";
+import { TeachesEdgeCollection } from "./collections/TeachesEdgeCollection";
 
 const dbServer = new Database();
 const db = dbServer.useDatabase("test");
@@ -45,65 +46,48 @@ async function queryTest() {
         }));
     
     console.log(query.toAQL(true));
-    // const result = await query.fetch(db); result[0].courses[0].teacher[0].firstname<Schema>
-    // console.log(inspect(result, false, null, true));
+    // const result = await query.fetch(db); result[0].courses[0].teacher[0].firstname
+    // // console.log(inspect(result, false, null, true));
 
-    const query2 = userCollection.createQuery("u1")
-        .return(u1 => ({
-            name: u1.firstname,
-            others: userCollection.createQuery("u2")
-                .return(u2 => ({
-                    name: u2.firstname
-                }))
-        }));
+    // const query2 = userCollection.createQuery("u1")
+    //     .return(u1 => ({
+    //         name: u1.firstname,
+    //         others: userCollection.createQuery("u2")
+    //             .return(u2 => ({
+    //                 name: u2.firstname
+    //             }))
+    //     }));
 
-    console.log(query2.toAQL(true));
+    // console.log(query2.toAQL(true));
 
-    const user = await userCollection.getOne(db, "62369");
-    console.log(user);
+    // const user = await userCollection.getOne(db, "62369");
+    // console.log(user);
     
-    const user2 = await userCollection.getOne(db, "???");
-    console.log(user2);
+    // const user2 = await userCollection.getOne(db, "???");
+    // console.log(user2);
 
-    const allUsers = await userCollection.getAll(db);
-    console.log(allUsers);
+    // const allUsers = await userCollection.getAll(db);
+    // console.log(allUsers);
 
-    const many = await userCollection.getMany(db, ["62369", "70888__"]);
-    console.log(many);
+    // const many = await userCollection.getMany(db, ["62369", "70888__"]);
+    // console.log(many);
 
-    // graphql
-    // courses {
-    //     id
-    //     title
-    //     location {
-    //         name
-    //     }
-    //     teacher {
-    //         firstname
-    //     }
-    // }
+    // const courseCollection = arangoStore.getCollection(CourseCollection);
+    // const query3 = courseCollection.createQuery("c").returnAll();
     
-    // aql
-    // FOR c IN courses
-    // RETURN { 
-    //     id: c._id,
-    //     title: c.title, 
-    //     location: { 
-    //         name: c.location.name 
-    //     },
-    //     teacher: FIRST(
-    //         FOR t IN 1 INBOUND c teaches 
-    //         RETURN {
-    //             firstname: t.firstname
-    //         }
-    //     )
-    // }
-
-    const courseCollection = arangoStore.getCollection(CourseCollection);
-    const query3 = courseCollection.createQuery("c").returnAll();
-    
-    console.log(query3.toAQL(true));
+    // console.log(query3.toAQL(true));
     // console.log((await query3.fetch(db))[0]);
+
+    const teachesCollection = arangoStore.getCollection(TeachesEdgeCollection);
+    const query4 = teachesCollection.createQuery("t").return(t => ({
+        f: t._from,
+        t: t._to
+    }));
+
+    console.log(query4.toAQL(true));
+    console.log((await query4.fetch(db)));
+
+    console.log((await teachesCollection.getAll(db)));
 }
 
 async function umlTest() {

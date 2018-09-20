@@ -1,7 +1,5 @@
 import { Database } from "arangojs";
-import { BaseCollection } from "arangojs/lib/cjs/collection";
 import { Collection } from "../collections/Collection";
-import { DocumentCollection } from "../collections/DocumentCollection";
 import { EdgeCollection } from "../collections/EdgeCollection";
 
 interface IRemoteCollection {
@@ -25,11 +23,10 @@ export async function getMissingCollections(db: Database, localCollections: Coll
 export async function createMissingCollections(db: Database, localCollections: Collection<any>[]) {
     Promise.all(
         localCollections.map(collection => {
-            if(collection instanceof DocumentCollection) {
-                return db.collection(collection._collectionName).create();
-            } else if(collection instanceof EdgeCollection) {
+            if(collection instanceof EdgeCollection) {
                 return db.edgeCollection(collection._collectionName).create();
             }
+            return db.collection(collection._collectionName).create();
         })
     );
 }
